@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs'
 
-async function getSneakers() {
+export async function getSneakers() {
     const filePath = 'sneakers.json';
     const response = await fetch("http://54.37.12.181:1337/api/sneakers");
     const sneakers = await response.json();
@@ -15,9 +15,9 @@ async function getSneakers() {
   }
   
 
-async function getSneaker(id) {
+export async function getSneaker(id) {
     const response = await fetch(`http://54.37.12.181:1337/api/sneakers/${id}`);
     const sneaker = await response.json();
-    
+
     return sneaker;
 }   
