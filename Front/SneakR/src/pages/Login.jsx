@@ -8,13 +8,15 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let authenticated = false;
 
     if (username === 'admin' && password === 'password') {
-
-      navigate('/home');
+      authenticated = true;
+      navigate('/');
     } else {
       alert('Invalid credentials');
     }
+    localStorage.setItem('isAuthenticated', authenticated);
   };
 
   return (
