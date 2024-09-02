@@ -1,25 +1,11 @@
 import "../css/navbar.css"
 import "../css/colors.css"
 
-import { NavItem } from "./NavItem"
-import SwitchTheme from "./SwitchTheme"
-import AXIOS from "../Tools/Client.jsx"
+import { NavItem } from "./NavItem.jsx"
 
 import { AiFillHome, AiOutlinePlus, AiFillSetting, AiOutlineLogout, AiOutlineCrown } from "react-icons/ai"
-import { useState, useEffect } from "react"
 
 function Navbar({ currentPage }) {
-    SwitchTheme()
-
-    const [element, setElement] = useState(<></>)
-    const token = "Bearer " + localStorage.getItem("token");
-
-    useEffect(() => {
-        AXIOS.get(localStorage.getItem("url") + "/current_user", { headers: { Authorization: token } })
-            .then(function (res) { if (res.data.admin) setElement(<NavItem icon={<AiOutlineCrown />} name="Admin" classes={`${currentPage === "Admin" ? "active" : ""}`} link="/admin" />) })
-            .catch(function (err) { Error({"res": err}) });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <div className="navbar">
