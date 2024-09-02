@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,11 +14,24 @@ export default function Login() {
 
     if (username === 'admin' && password === 'password') {
       authenticated = true;
+      localStorage.setItem('isAuthenticated', authenticated);
       navigate('/');
     } else {
       alert('Invalid credentials');
     }
-    localStorage.setItem('isAuthenticated', authenticated);
+  };
+
+  const handleGoogleSuccess = (response) => {
+    console.log(response); // Vous pouvez inspecter les détails de la réponse ici
+    const { credential } = response;
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('googleToken', credential); // Stocker le token Google
+    navigate('/');
+  };
+
+  const handleGoogleFailure = () => {
+    console.error('Google Sign In was unsuccessful.');
+    alert('Google Sign In was unsuccessful.');
   };
 
   return (
@@ -42,8 +56,14 @@ export default function Login() {
         </div>
         <button type="submit">Login</button>
       </form>
-      <p>Don't have an account? <Link to="/register">Register here</Link></p>
 
+      <p>Or sign in with Google:</p>
+      <GoogleLogin
+        onSuccess={handleGoogleSuccess}
+        onError={handleGoogleFailure}
+      />
+
+      <p>Don't have an account? <Link to="/register">Register here</Link></p>
     </div>
   );
 }
