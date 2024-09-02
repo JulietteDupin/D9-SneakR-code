@@ -1,16 +1,15 @@
-// pages/home.js
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('authenticated');
     if (!isAuthenticated) {
-      router.push('/login');
+      navigate('/login');
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div>

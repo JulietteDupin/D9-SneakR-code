@@ -1,18 +1,17 @@
-// pages/login.js
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simuler une authentification
+
     if (username === 'admin' && password === 'password') {
-      localStorage.setItem('authenticated', 'true');
-      router.push('/home');
+
+      navigate('/home');
     } else {
       alert('Invalid credentials');
     }
