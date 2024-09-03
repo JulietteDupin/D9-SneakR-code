@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+const bcrypt = require('bcrypt');
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -29,10 +30,14 @@ router.get('/:id', async (req, res) => {
 // Create a new user
 router.post('/', async (req, res) => {
   const { username, email, password } = req.body;
+
+  const saltRounds = 10; // Number of salt rounds (higher means more secure but slower)
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
   try {
     const [result] = await db.query(
       'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-      [username, email, password]
+      [username, email, hashedPassword]
     );
     res.status(201).json({ id: result.insertId, username, email });
   } catch (err) {
@@ -44,10 +49,14 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { username, email, password } = req.body;
+
+  const saltRounds = 10; // Number of salt rounds (higher means more secure but slower)
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
   try {
     const [result] = await db.query(
       'UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?',
-      [username, email, password, id]
+      [username, email, hashedPassword, id]
     );
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'User not found' });
