@@ -19,7 +19,9 @@ app.options('*', cors()); // Respond to preflight requests with CORS headers
 app.use(express.json());
 
 // Routes
-app.use('/users', require('./routes/users'));
+app.use('/users', require('./routes/auth/users'));
+app.use('/login', require('./routes/auth/login'));
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
