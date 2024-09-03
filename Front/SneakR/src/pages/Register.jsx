@@ -31,7 +31,7 @@ export default function Register() {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': "*",
         },
-        body: JSON.stringify({ "name": name, "email": email, "password": password })
+        body: JSON.stringify({ "username": name, "email": email, "password": password })
       })
       if (response.ok) {
         console.log('User created')
