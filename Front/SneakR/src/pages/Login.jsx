@@ -13,7 +13,7 @@ export default function Login() {
 
     // eslint-disable-next-line no-useless-catch
     try {
-      let response = await fetch(import.meta.env.VITE_APP_USERS_ROUTE, {
+      let response = await fetch(import.meta.env.VITE_APP_LOGIN_ROUTE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
