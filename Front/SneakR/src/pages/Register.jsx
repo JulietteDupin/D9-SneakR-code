@@ -25,7 +25,7 @@ export default function Register() {
 
     // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
     try {
-      response = await fetch('https://localhost:5000/users', {
+      response = await fetch('http://localhost:5000/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
