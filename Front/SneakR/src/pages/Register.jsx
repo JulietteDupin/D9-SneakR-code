@@ -23,7 +23,6 @@ export default function Register() {
       return;
     }
 
-    // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
     try {
       let response = await fetch(import.meta.env.VITE_APP_USERS_ROUTE, {
         method: 'POST',
@@ -44,7 +43,7 @@ export default function Register() {
       console.error('Error:', error)
       setError(error.message)
     }
-
+    // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
     localStorage.setItem('name', name);
     localStorage.setItem('password', password);
     localStorage.setItem('email', email);
