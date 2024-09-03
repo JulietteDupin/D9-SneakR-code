@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 export default function Register() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -16,17 +18,34 @@ export default function Register() {
       return;
     }
 
-    if (!username || !password) {
+    if (!username || !password || !email) {
       setError('Please fill in all fields');
       return;
     }
 
     // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
+    try {
+      response = await fetch('https://localhost:5000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"username": username, "email": email, "password": password})
+      })
+      if (response.ok) {
+        console.log('User created')
+        navigate('/login');
+      } else {
+        setError("User not created")
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      setError(error)
+    }
+
     localStorage.setItem('username', username);
     localStorage.setItem('password', password);
-
-    // Redirect to the login page
-    navigate('/login');
+    localStorage.setItem('email', email);
   };
 
   return (
@@ -40,6 +59,14 @@ export default function Register() {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Email: </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div>
