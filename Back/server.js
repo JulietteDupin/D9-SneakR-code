@@ -6,9 +6,9 @@ const app = express();
 
 // Middleware
 const corsOptions = {
-  origin: [import.meta.url.VITE_APP_CLIENT_URL],
-  methods: 'GET, PUT, POST, DELETE',
-  allowedHeaders: 'Authorization, Content-Type'
+  origin: ['*'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ["*"]  
 };
 
 app.use(cors(corsOptions));

@@ -29,7 +29,7 @@ export default function Register() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': import.meta.env.VITE_APP_CLIENT_URL
+          'Access-Control-Allow-Origin': "*",
         },
         body: JSON.stringify({ "name": name, "email": email, "password": password })
       })
@@ -37,11 +37,12 @@ export default function Register() {
         console.log('User created')
         navigate('/login');
       } else {
+        console.error(response)
         setError("User not created")
       }
     } catch (error) {
       console.error('Error:', error)
-      setError(error)
+      setError(error.message)
     }
 
     localStorage.setItem('name', name);
