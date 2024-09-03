@@ -53,6 +53,11 @@ export default function Login() {
       <GoogleLogin
         onSuccess={handleGoogleSuccess}
         onError={handleGoogleFailure}
+        text="signin_with"
+        shape="rectangular"
+        theme="outline"
+        size="large"
+        width="300"
       />
 
       <p>Don't have an account? <Link to="/register">Register here</Link></p>
