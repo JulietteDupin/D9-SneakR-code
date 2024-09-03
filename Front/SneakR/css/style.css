@@ -1,284 +1,62 @@
-.LandingFrame {
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+root {
+  display: flex;
   width: 100%;
-  max-width: 1868px;
-  height: auto;
-  position: relative;
-  padding: 20px;
-  margin: 0 auto;
 }
 
-.Frame {
+.frame {
+  width: 95%;
+}
+.sneaker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(200px, auto);
+  grid-gap: 20px;
+  padding: 3rem;
+  padding-top: 10rem;
+}
+
+.sneaker-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 15px;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sneaker-item:hover {
+  transform: translateY(-5px);
+}
+
+.sneaker-item img {
   width: 100%;
-  max-width: 1691px;
   height: auto;
-  margin: 0 auto;
-  background: #0C0C0C;
-  border-radius: 35px;
-  padding: 20px;
-  box-sizing: border-box;
+  border-radius: 4px;
 }
 
-.ShoePicture {
-  width: 100%;
-  max-width: 1022px;
-  height: auto;
-  position: relative;
-  margin: 20px auto;
-  display: block;
-}
-
-.Heading {
-  width: 100%;
-  max-width: 531px;
-  height: auto;
-  margin: 0 auto;
-  text-align: center;
-  padding: 20px;
-}
-
-.ShoeName {
-  color: white;
-  font-size: 4vw;
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.MenSTrainingShoes {
-  color: white;
-  font-size: 2.5vw;
-  font-family: 'Inter', sans-serif;
-  font-weight: 200;
-  margin-top: 10px;
-}
-
-.IconReebokLogoWhite1 {
-  width: 160px;
-  height: 51px;
-  margin: 20px auto;
-  position: relative;
-}
-
-.Vector {
-  position: absolute;
-  background: #E41D1B;
-}
-
-.Women, .Kids, .Unisex, .ReleaseDate, .Sale, .Men {
-  color: white;
-  font-size: 2vw; /* Adjusted to viewport width */
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  text-transform: uppercase;
-  text-align: center;
+.sneaker-name {
+  font-size: 1.2rem;
+  font-weight: bold;
   margin: 10px 0;
-}
-
-.Women {
   color: black;
 }
 
-.Line1 {
-  width: 10%;
-  height: 4px;
-  margin: 10px auto;
-  background: #E41D1B;
+.sneaker-brand,
+.sneaker-colorway {
+  font-size: 0.9rem;
+  color: #555;
 }
 
-.Description {
-  width: 100%;
-  max-width: 711px;
-  margin: 20px auto;
-  color: #8E8E8E;
-  font-size: 2vw; /* Adjusted to viewport width */
-  font-family: 'Inter', sans-serif;
-  text-align: center;
+.sneaker-brand {
+  margin-top: 5px;
 }
 
-.Price {
-  color: white;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  text-align: center;
-}
-
-.Price1 {
-  font-size: 4vw; /* Adjusted to viewport width */
-  margin: 10px 0;
-}
-
-.Price2 {
-  color: #8E8E8E;
-  font-size: 2vw; /* Adjusted to viewport width */
-}
-
-.Rating {
-  color: white;
-  font-size: 2vw; /* Adjusted to viewport width */
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  text-align: center;
-  margin: 10px 0;
-}
-
-.Votes {
-  color: #8E8E8E;
-  font-size: 2vw; /* Adjusted to viewport width */
-  font-family: 'Inter', sans-serif;
-  text-align: center;
-  margin: 10px 0;
-}
-
-.StarRating {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-}
-
-.Button {
-  padding: 8px;
-  border-radius: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.IconStar {
-  width: 32px;
-  height: 32px;
-  position: relative;
-}
-
-.Line2 {
-  width: 10%;
-  height: 2px;
-  margin: 10px auto;
-  background: #E41D1B;
-  transform: rotate(-28.96deg);
-}
-
-.ViewMenuButton {
-  width: 100%;
-  max-width: 530px;
-  height: auto;
-  margin: 20px auto;
-  display: flex;
-  justify-content: space-between;
-}
-
-.Rectangle3 {
-  width: 45%;
-  height: 60px;
-  background: #FF0303;
-  border-radius: 20px;
-}
-
-.AddToCart, .SaveToWishlist {
-  text-align: center;
-  font-size: 2vw; /* Adjusted to viewport width */
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 60px;
-}
-
-.AddToCart {
-  color: white;
-}
-
-.SaveToWishlist {
-  color: #8E8E8E;
-}
-
-.Cart2, .HeartFill {
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  top: 18px;
-}
-
-.Cart2 {
-  left: 10px;
-}
-
-.HeartFill {
-  right: 10px;
-}
-
-/* Media Queries for Responsiveness */
-@media (max-width: 1200px) {
-  .ReebokNanoX2 {
-    font-size: 5vw;
-  }
-
-  .MenSTrainingShoes {
-    font-size: 3vw;
-  }
-
-  .Price1 {
-    font-size: 5vw;
-  }
-
-  .Description {
-    font-size: 2.5vw;
-  }
-
-  .Rating, .Votes, .AddToCart, .SaveToWishlist {
-    font-size: 2.5vw;
-  }
-}
-
-@media (max-width: 768px) {
-  .ReebokNanoX2 {
-    font-size: 6vw;
-  }
-
-  .MenSTrainingShoes {
-    font-size: 4vw;
-  }
-
-  .Price1 {
-    font-size: 6vw;
-  }
-
-  .Description {
-    font-size: 3vw;
-  }
-
-  .Rating, .Votes, .AddToCart, .SaveToWishlist {
-    font-size: 3vw;
-  }
-}
-
-@media (max-width: 480px) {
-  .ReebokNanoX2 {
-    font-size: 8vw;
-  }
-
-  .MenSTrainingShoes {
-    font-size: 5vw;
-  }
-
-  .Price1 {
-    font-size: 8vw;
-  }
-
-  .Description {
-    font-size: 4vw;
-  }
-
-  .Rating, .Votes, .AddToCart, .SaveToWishlist {
-    font-size: 4vw;
-  }
-
-  .Rectangle3 {
-    width: 100%;
-  }
-
-  .ViewMenuButton {
-    flex-direction: column;
-    align-items: center;
-  }
+.sneaker-colorway {
+  margin-top: 2px;
 }
