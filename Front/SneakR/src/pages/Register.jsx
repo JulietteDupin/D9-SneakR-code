@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,19 +18,20 @@ export default function Register() {
       return;
     }
 
-    if (!username || !password || !email) {
+    if (!name || !password || !email) {
       setError('Please fill in all fields');
       return;
     }
 
     // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
     try {
-      response = await fetch('http://localhost:5000/users', {
+      let response = await fetch(import.meta.env.VITE_APP_USERS_ROUTE, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': import.meta.env.VITE_APP_CLIENT_URL
         },
-        body: JSON.stringify({"username": username, "email": email, "password": password})
+        body: JSON.stringify({ "name": name, "email": email, "password": password })
       })
       if (response.ok) {
         console.log('User created')
@@ -43,7 +44,7 @@ export default function Register() {
       setError(error)
     }
 
-    localStorage.setItem('username', username);
+    localStorage.setItem('name', name);
     localStorage.setItem('password', password);
     localStorage.setItem('email', email);
   };
@@ -54,11 +55,11 @@ export default function Register() {
       <form onSubmit={handleRegister}>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <div>
-          <label>Username: </label>
+          <label>name: </label>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={name}
+            onChange={(e) => setname(e.target.value)}
           />
         </div>
         <div>

@@ -5,7 +5,13 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: [import.meta.url.VITE_APP_CLIENT_URL],
+  methods: 'GET, PUT, POST, DELETE',
+  allowedHeaders: 'Authorization, Content-Type'
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
