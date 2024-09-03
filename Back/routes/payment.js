@@ -6,7 +6,9 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Your Stripe 
 router.use(express.json());
 
 router.post('/create-payment-intent', async (req, res) => {
-  console.log("create paylent intent")
+  console.log("create payment intent")
+  console.log("req", req);
+  console.log("body", req.body);
   const { amount } = req.body; // Amount should be in the smallest currency unit (e.g., cents for USD)
 
   console.log("amount", amount);
