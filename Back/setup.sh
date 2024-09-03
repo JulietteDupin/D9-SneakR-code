@@ -1,6 +1,3 @@
-# launch API
-
-npm install; npm start
 
 # launch DB
 
@@ -9,3 +6,7 @@ npm install; npm start
 
 # Autres
 sudo service mysql start; echo "source schema.sql" | mysql -u root
+
+# launch API
+
+npm install; npm start
