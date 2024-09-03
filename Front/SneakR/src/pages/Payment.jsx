@@ -14,15 +14,18 @@ export default function Payment() {
 
 const handlePayment = async (e) => {
     e.preventDefault();
+    console.log("handlepayment");
 
     // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
     try {
-      let response = await fetch(import.meta.env.VITE_APP_PAYMENT_ROUTE + '/create-checkout-session', {
+
+      let response = await fetch(import.meta.env.VITE_APP_PAYMENT_ROUTE + '/create-payment-intent', {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': "*",
         },
-        body: JSON.stringify({ "amout": "1000" })
+        body: JSON.stringify({ amount: 1000 })
       })
       if (response.ok) {
         console.log('User created')
