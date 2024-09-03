@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../config/db');
 
 // Get all users
-router.get('/', async (req, res) => {
+router.get('/users', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM users');
     res.json(rows);
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get a user by ID
-router.get('/:id', async (req, res) => {
+router.get('/users/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [id]);
@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a new user
-router.post('/', async (req, res) => {
+router.post('/users', async (req, res) => {
   const { username, email, password } = req.body;
   try {
     const [result] = await db.query(
@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
 });
 
 // Update a user by ID
-router.put('/:id', async (req, res) => {
+router.put('/users/:id', async (req, res) => {
   const { id } = req.params;
   const { username, email, password } = req.body;
   try {
@@ -59,7 +59,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete a user by ID
-router.delete('/:id', async (req, res) => {
+router.delete('/users/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query('DELETE FROM users WHERE id = ?', [id]);
