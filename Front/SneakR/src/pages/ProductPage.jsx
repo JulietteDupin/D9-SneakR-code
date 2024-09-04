@@ -1,15 +1,18 @@
 import React from 'react';
-import "../../css/sneaker.css"
+import "../../css/sneaker.css";
 import Navbar from '../tools/Navbar';
+import { useCart } from '../context/CartContext';
 
 const ProductPage = ({ sneaker }) => {
+  const { addToCart } = useCart();
+
   if (!sneaker) {
     return <div>Product not found</div>;
   }
 
   return (
     <div className="product-page">
-      <Navbar></Navbar>
+      <Navbar />
       <div className="product-left">
         <ProductImage src={sneaker.attributes.image.small} alt={sneaker.attributes.name} />
       </div>
@@ -24,7 +27,8 @@ const ProductPage = ({ sneaker }) => {
           size={sneaker.attributes.size} 
           price={sneaker.attributes.estimatedMarketValue} 
         />
-        <ProductActions />
+        {/* Pass addToCart and sneaker to ProductActions */}
+        <ProductActions addToCart={addToCart} product={sneaker} />
       </div>
     </div>
   );
@@ -67,16 +71,22 @@ const ProductOptions = ({ color, size, price }) => {
   );
 };
 
+// Update ProductActions to accept addToCart and product props
+const ProductActions = ({ addToCart, product }) => {
+  // Structure the product data to match what addToCart expects
+  const item = {
+    id: product.id,
+    name: product.attributes.name,
+    price: product.attributes.estimatedMarketValue,
+    image: product.attributes.image.small,
+  };
 
-const ProductActions = () => {
   return (
     <div className="product-actions">
-      <button className="add-to-cart">Add to cart</button>
-      <button className="add-to-wishlist">Add to wishlist</button>
+      <button onClick={() => addToCart(item)} className="add-to-cart">
+        Add to Cart
+      </button>
+      <button className="add-to-wishlist">Add to Wishlist</button>
     </div>
   );
 };
-
-
-
-
