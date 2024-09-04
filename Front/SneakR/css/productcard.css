@@ -1,0 +1,129 @@
+.product-card-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e5e7eb;
+  }
+  
+  .product-card {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .product-image {
+    object-fit: cover;
+    height: 16rem;
+    width: 100%;
+  }
+  
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .product-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .product-description {
+    font-size: 1rem;
+    color: #4b5563;
+  }
+  
+  .product-price {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .product-colors {
+    display: flex;
+    gap: 1rem; 
+    margin-top: 1rem; 
+    padding: 0 1rem; 
+  }
+  
+  .product-actions {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .add-to-cart-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    cursor: pointer;
+    color: #1f2937;
+  }
+  
+  .add-to-cart-btn:hover {
+    text-decoration: underline;
+  }
+  
+  .add-to-cart-text {
+    font-size: 1rem;
+  }
+  
+  .add-to-cart-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+  
+  .sneaker-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    justify-content: center;
+    }
+  
+  .sneaker-item {
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 15px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    list-style: none;
+    cursor: pointer;
+  }
+  
+  .sneaker-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .sneaker-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  .sneaker-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 10px 0;
+    color: black;
+  }
+  
+  .sneaker-brand,
+  .sneaker-colorway {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .sneaker-brand {
+    margin-top: 5px;
+  }
+  
+  .sneaker-colorway {
+    margin-top: 2px;
+  }

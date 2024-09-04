@@ -71,14 +71,6 @@ export default function Register() {
           />
         </div>
         <div>
-          <label>Email: </label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
           <label>Password: </label>
           <input
             type="password"

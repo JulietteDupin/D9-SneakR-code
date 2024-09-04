@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
@@ -11,34 +10,34 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // eslint-disable-next-line no-useless-catch
     try {
       let response = await fetch(import.meta.env.VITE_APP_LOGIN_ROUTE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': "*",
+          'Access-Control-Allow-Origin': '*',
         },
-        body: JSON.stringify({'email':email, 'password':password})
-      })
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
       if (response.ok) {
+        localStorage.setItem('token', data.token);
         alert('Login successful');
         navigate('/products');
       } else {
-        alert('Invalid credentials');
+        alert('Credentials are invalid');
       }
-    } catch(error) {
-        throw error
+    } catch (error) {
+      console.error('Error during login', error);
     }
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('password', password);
-    localStorage.setItem('email', email);
   };
 
   const handleGoogleSuccess = (response) => {
     const { credential } = response;
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('googleToken', credential);
+    localStorage.setItem('token', credential);
+    alert('Google login successful');
     navigate('/products');
   };
 
@@ -57,6 +56,7 @@ export default function Login() {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -65,6 +65,7 @@ export default function Login() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         <button type="submit">Login</button>
