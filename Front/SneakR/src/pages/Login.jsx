@@ -22,7 +22,6 @@ export default function Login() {
   };
 
   const handleGoogleSuccess = (response) => {
-    console.log(response);
     const { credential } = response;
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('googleToken', credential);

@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import sneakersData from '../../../../Back/sneakers.json';
 import Navbar from '../tools/Navbar';
 import SneakerList from '../tools/SneakerList';
 import Pagination from '../tools/Pagination';
 
 import '../../css/style.css';
 
-export default function Home({ setSelectedSneaker }) {
+export default function Catalog({ setSelectedSneaker }) {
   const navigate = useNavigate();
   const { gender } = useParams();
-  const [sneakers, setSneakers] = useState(sneakersData.data);
+  const [sneakers, setSneakers] = useState();
 
   const [currentPage, setCurrentPage] = useState(1);
   const sneakersPerPage = 25;
@@ -28,9 +27,23 @@ export default function Home({ setSelectedSneaker }) {
   // Vérification de l'authentification (à remplacer par token JWT plus tard)
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
+
     if (!isAuthenticated) {
       navigate('/login');
     }
+  
+    fetch('https://localhost:5000/products', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': "*",
+      },
+    })
+      .then(response => response.json())  
+      .then(data => setSneakers(data))
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }, [navigate]);
 
   return (
