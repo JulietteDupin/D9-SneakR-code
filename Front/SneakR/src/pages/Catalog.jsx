@@ -34,11 +34,10 @@ export default function Catalog({ setSelectedSneaker }) {
   const [currentPage, setCurrentPage] = useState(1);
   const sneakersPerPage = 25;
 
-  // Vérification de l'authentification (à remplacer par token JWT plus tard)
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    const token = localStorage.getItem('token');
 
-    if (!isAuthenticated) {
+    if (!token) {
       navigate('/login');
     } else {
       fetchData();
