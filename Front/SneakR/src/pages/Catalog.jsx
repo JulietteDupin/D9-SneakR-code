@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../tools/Navbar';
 import SneakerList from '../tools/SneakerList';
+import Pagination from '../tools/Pagination';
 import sneakersData from '../../../../Back/sneakers.json'
 
 import '../../css/style.css';
@@ -10,6 +11,8 @@ export default function Catalog({ setSelectedSneaker }) {
   const navigate = useNavigate();
   const { gender } = useParams();
   const [error, setError] = useState(null);
+  const sneakers = sneakersData.data;
+
 
   //On every render of the page, this function calls the sneakers api to create sneakers.json, and we retrieve the sneakers from sneakers.json. 
   //TODO: put the sneakers.json directly in the database and change the request
@@ -28,6 +31,10 @@ export default function Catalog({ setSelectedSneaker }) {
     }
   }
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const sneakersPerPage = 25;
+
+  // Vérification de l'authentification (à remplacer par token JWT plus tard)
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
 
@@ -38,13 +45,29 @@ export default function Catalog({ setSelectedSneaker }) {
     }
   }, [navigate]);
 
+  let filteredSneakers = !gender
+    ? sneakers
+    : sneakers.filter(sneaker => sneaker.attributes.gender.toLowerCase() === gender.toLowerCase());
+
+  const indexOfLastSneaker = currentPage * sneakersPerPage;
+  const indexOfFirstSneaker = indexOfLastSneaker - sneakersPerPage;
+  const currentSneakers = filteredSneakers.slice(indexOfFirstSneaker, indexOfLastSneaker);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className='frame'>
       <Navbar />
       <SneakerList
-        sneakers={sneakersData.data}
+        sneakers={currentSneakers}
         gender={gender || "all"}
         setSelectedSneaker={setSelectedSneaker}
+      />
+      <Pagination
+        sneakersPerPage={sneakersPerPage}
+        totalSneakers={filteredSneakers.length}
+        paginate={paginate}
+        currentPage={currentPage}
       />
     </div>
   );
