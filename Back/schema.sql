@@ -43,6 +43,13 @@ CREATE TABLE `sneakers` (
   PRIMARY KEY (`id`)
 );
 
+<<<<<<< HEAD
+LOCK TABLES `sneakers` WRITE;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `users`;
+=======
+>>>>>>> f0116628378b0f247c7225fe835209068d9e9668
 CREATE TABLE `users` (
   `id` int(11) AUTO_INCREMENT,
   `firstname` varchar(255) DEFAULT NULL,
@@ -57,6 +64,11 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
+<<<<<<< HEAD
+
+LOCK TABLES `users` WRITE;
+UNLOCK TABLES;
+=======
 
 -- Optional: Lock tables for certain operations (usually not needed during schema setup)
 -- LOCK TABLES `sneakers` WRITE;
@@ -64,3 +76,4 @@ CREATE TABLE `users` (
 
 -- LOCK TABLES `users` WRITE;
 -- UNLOCK TABLES;
+>>>>>>> f0116628378b0f247c7225fe835209068d9e9668

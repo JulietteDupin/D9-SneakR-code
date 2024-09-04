@@ -22,6 +22,7 @@ app.use(express.json());
 app.use('/users', require('./routes/auth/users'));
 app.use('/login', require('./routes/auth/login'));
 app.use('/payment', require('./routes/payment'));
+app.use('/products', require('./routes/products'))
 
 // Start server
 const PORT = process.env.PORT || 5000;

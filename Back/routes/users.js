@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+<<<<<<< HEAD
+=======
 const bcrypt = require('bcrypt');
+>>>>>>> f0116628378b0f247c7225fe835209068d9e9668
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -30,6 +33,12 @@ router.get('/:id', async (req, res) => {
 // Create a new user
 router.post('/', async (req, res) => {
   const { username, email, password } = req.body;
+<<<<<<< HEAD
+  try {
+    const [result] = await db.query(
+      'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+      [username, email, password]
+=======
 
   const saltRounds = 10; // Number of salt rounds (higher means more secure but slower)
   const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -38,6 +47,7 @@ router.post('/', async (req, res) => {
     const [result] = await db.query(
       'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
       [username, email, hashedPassword]
+>>>>>>> f0116628378b0f247c7225fe835209068d9e9668
     );
     res.status(201).json({ id: result.insertId, username, email });
   } catch (err) {
