@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 
 export default function Register() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [name, setname] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -16,17 +18,35 @@ export default function Register() {
       return;
     }
 
-    if (!username || !password) {
+    if (!name || !password || !email) {
       setError('Please fill in all fields');
       return;
     }
 
+    try {
+      let response = await fetch(import.meta.env.VITE_APP_USERS_ROUTE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': "*",
+        },
+        body: JSON.stringify({ "username": name, "email": email, "password": password })
+      })
+      if (response.ok) {
+        console.log('User created')
+        navigate('/login');
+      } else {
+        console.error(response)
+        setError("User not created")
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      setError(error.message)
+    }
     // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
-    localStorage.setItem('username', username);
+    localStorage.setItem('name', name);
     localStorage.setItem('password', password);
-
-    // Redirect to the login page
-    navigate('/login');
+    localStorage.setItem('email', email);
   };
 
   return (
@@ -35,11 +55,27 @@ export default function Register() {
       <form onSubmit={handleRegister}>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <div>
-          <label>Username: </label>
+          <label>name: </label>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={name}
+            onChange={(e) => setname(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Email: </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Email: </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div>

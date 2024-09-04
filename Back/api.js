@@ -18,6 +18,11 @@ async function getSneakers() {
 async function getSneaker(id) {
     const response = await fetch(`http://54.37.12.181:1337/api/sneakers/${id}`);
     const sneaker = await response.json();
-    
+
     return sneaker;
 }   
+
+module.exports = {
+  getSneakers,
+  getSneaker
+};
