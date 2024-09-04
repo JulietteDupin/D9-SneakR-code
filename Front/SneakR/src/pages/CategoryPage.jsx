@@ -7,25 +7,25 @@ import Pagination from '../tools/Pagination';
 
 import '../../css/style.css';
 
-export default function Home({ setSelectedSneaker }) {
+export default function CategoryPage({ setSelectedSneaker }) {
   const navigate = useNavigate();
   const { gender } = useParams();
   const [sneakers, setSneakers] = useState(sneakersData.data);
 
   const [currentPage, setCurrentPage] = useState(1);
   const sneakersPerPage = 25;
+  const indexOfLastSneaker = currentPage * sneakersPerPage;
+  const indexOfFirstSneaker = indexOfLastSneaker - sneakersPerPage;
 
-  const filteredSneakers = gender === "all" || !gender
+  const filteredSneakers = !gender
     ? sneakers
     : sneakers.filter(sneaker => sneaker.attributes.gender.toLowerCase() === gender.toLowerCase());
 
-  const indexOfLastSneaker = currentPage * sneakersPerPage;
-  const indexOfFirstSneaker = indexOfLastSneaker - sneakersPerPage;
-  const currentSneakers = filteredSneakers.slice(indexOfFirstSneaker, indexOfLastSneaker);
 
+  const currentSneakers = filteredSneakers.slice(indexOfFirstSneaker, indexOfLastSneaker);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Vérification de l'authentification (à remplacer par token JWT plus tard)
+  // TODO: changer pour un token JWT
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
     if (!isAuthenticated) {
@@ -37,16 +37,19 @@ export default function Home({ setSelectedSneaker }) {
     <div className='frame'>
       <Navbar />
       <SneakerList
-        sneakers={currentSneakers}
-        gender={gender || "all"}
+        sneakers={sneakers}
+        gender={gender}
         setSelectedSneaker={setSelectedSneaker}
       />
+
       <Pagination
         sneakersPerPage={sneakersPerPage}
-        totalSneakers={filteredSneakers.length}
+        totalSneakers={currentSneakers.length}
         paginate={paginate}
         currentPage={currentPage}
       />
+
     </div>
   );
 }
+
