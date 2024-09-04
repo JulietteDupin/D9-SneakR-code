@@ -1,32 +1,45 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    let authenticated = false;
 
-    if (username === 'admin' && password === 'password') {
-      authenticated = true;
-      localStorage.setItem('isAuthenticated', authenticated);
-      navigate('/');
-    } else {
-      alert('Invalid credentials');
+    // eslint-disable-next-line no-useless-catch
+    try {
+      let response = await fetch(import.meta.env.VITE_APP_LOGIN_ROUTE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': "*",
+        },
+        body: JSON.stringify({'email':email, 'password':password})
+      })
+      if (response.ok) {
+        alert('Login successful');
+        navigate('/products');
+      } else {
+        alert('Invalid credentials');
+      }
+    } catch(error) {
+        throw error
     }
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('password', password);
+    localStorage.setItem('email', email);
   };
 
   const handleGoogleSuccess = (response) => {
-    console.log(response);
     const { credential } = response;
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('googleToken', credential);
-    navigate('/');
+    navigate('/products');
   };
 
   const handleGoogleFailure = () => {
@@ -39,11 +52,11 @@ export default function Login() {
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username: </label>
+          <label>Email: </label>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div>
