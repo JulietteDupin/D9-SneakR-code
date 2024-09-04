@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -60,6 +60,14 @@ export default function Register() {
             type="text"
             value={name}
             onChange={(e) => setname(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Email: </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div>

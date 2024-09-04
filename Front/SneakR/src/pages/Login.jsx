@@ -23,7 +23,7 @@ export default function Login() {
       })
       if (response.ok) {
         alert('Login successful');
-        navigate('/');
+        navigate('/products');
       } else {
         alert('Invalid credentials');
       }
@@ -39,7 +39,7 @@ export default function Login() {
     const { credential } = response;
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('googleToken', credential);
-    navigate('/');
+    navigate('/products');
   };
 
   const handleGoogleFailure = () => {
