@@ -19,7 +19,7 @@ async function deleteAllStripeSneakers() {
 
 async function getSneakers() {
   const fs = require('fs');
-  const stripe = require('stripe')("sk_test_51PvHtDI2zoQhkaff8YhqT9DGZSBs8abMehaSqWbclwzCJqyrD23tScvgz74WrdF2o92VMUVhc7rXtE0Kflm87qpq00DY3TjgLJ"); // Your Stripe Secret Key
+  const stripe = require('stripe')("sk_test_51PvHtDI2zoQhkaff8YhqT9DGZSBs8abMehaSqWbclwzCJqyrD23tScvgz74WrdF2o92VMUVhc7rXtE0Kflm87qpq00DY3TjgLJ");
 
   await delay(1200)
   for(page = 0; page <= 1969; page++) {

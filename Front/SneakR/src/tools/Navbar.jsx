@@ -13,6 +13,7 @@ const Navbar = () => {
         <nav className={`navbar ${isOpen ? 'active' : ''}`}>
             <div className="logo">SneakR</div>
             <ul className="nav-links">
+                <li><Link to="/cart">Cart</Link></li>
                 <li><Link to="/products">Catalog</Link></li>
                 <li><Link to="/products/category/men">Men</Link></li>
                 <li><Link to="/products/category/women">Women</Link></li>
