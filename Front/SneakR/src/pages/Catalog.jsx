@@ -14,7 +14,29 @@ export default function Catalog({ setSelectedSneaker }) {
   const [currentPage, setCurrentPage] = useState(1);
   const sneakersPerPage = 25;
 
-  const filteredSneakers = gender === "all" || !gender
+  // Vérification de l'authentification (à remplacer par token JWT plus tard)
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+
+    fetch('https://localhost:5000/products', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': "*",
+      },
+    })
+      .then(response => response.json())
+      .then(data => setSneakers(data))
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, [navigate]);
+
+  let filteredSneakers = !gender
     ? sneakers
     : sneakers.filter(sneaker => sneaker.attributes.gender.toLowerCase() === gender.toLowerCase());
 
@@ -23,28 +45,6 @@ export default function Catalog({ setSelectedSneaker }) {
   const currentSneakers = filteredSneakers.slice(indexOfFirstSneaker, indexOfLastSneaker);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  // Vérification de l'authentification (à remplacer par token JWT plus tard)
-  useEffect(() => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  
-    fetch('https://localhost:5000/products', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': "*",
-      },
-    })
-      .then(response => response.json())  
-      .then(data => setSneakers(data))
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }, [navigate]);
 
   return (
     <div className='frame'>
