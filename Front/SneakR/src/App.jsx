@@ -4,6 +4,7 @@ import Catalog from './pages/Catalog';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductPage from './pages/ProductPage';
+import Payment from './pages/Payment';
 
 export default function App() {
   const [selectedSneaker, setSelectedSneaker] = useState(null);
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/products/category/:gender" element={<Catalog setSelectedSneaker={setSelectedSneaker} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
     </div>
   );

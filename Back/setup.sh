@@ -1,9 +1,12 @@
-# launch API
-
-npm install; npm start
 
 # launch DB
 
-mysql -u root -p
+# Manjaro
+# mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql; sudo systemctl start mysqld; sudo systemctl enable mysqld; echo "source schema.sql" | sudo mysql -u root
 
-source schema.sql
+# Autres
+sudo service mysql start; echo "source schema.sql" | mysql -u root -p
+
+# launch API
+
+npm install; npm start

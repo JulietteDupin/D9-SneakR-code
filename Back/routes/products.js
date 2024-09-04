@@ -7,7 +7,6 @@ router.get('/', async (req, res) => {
     try {
         getSneakers();
         const sneakers = JSON.stringify(sneakersJson);
-        console.log(sneakers);
         return sneakers;
     } catch (err) {
       res.status(500).json({ message: 'Failed to retreive the products from the API', error: err.message });
