@@ -31,17 +31,18 @@ router.get('/:id', async (req, res) => {
 // Create a new user
 router.post('/', async (req, res) => {
   const { username, email, password } = req.body;
-  const customer = await stripe.customers.create({
-    name: username,
-    email: email,
-  });
-
-  const saltRounds = 10; // Number of salt rounds (higher means more secure but slower)
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   try {
+    const customer = await stripe.customers.create({
+      name: username,
+      email: email,
+    });
+  
+    const saltRounds = 10; // Number of salt rounds (higher means more secure but slower)
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     const [result] = await db.query(
-      'INSERT INTO users (username, email, password, stripe_customer_id) VALUES (?, ?, ?)',
+      'INSERT INTO users (username, email, password, stripe_customer_id) VALUES (?, ?, ?, ?)',
       [username, email, hashedPassword, customer.id]
     );
     res.status(201).json({ id: result.insertId, username, email });

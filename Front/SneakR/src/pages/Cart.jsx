@@ -1,4 +1,3 @@
-// Cart.jsx
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import "../../css/sneaker.css";
@@ -7,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js'
 
 const Cart = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
   const { cartItems, totalAmount, removeFromCart, clearCart } = useCart();
   const [selectedSneaker, setSelectedSneaker] = useState(null);
 
@@ -28,7 +27,7 @@ const Cart = () => {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': "*",
         },
-        body: JSON.stringify({ amount: totalAmount * 100})
+        body: JSON.stringify({ line_items: cartItems, email: localStorage.getItem('email')})
       })
 
       const data = await response.json();
@@ -78,7 +77,7 @@ const Cart = () => {
                 />
                 <div className="sneaker-details">
                   <p className="sneaker-name">{sneaker.name || 'Unknown Sneaker'}</p>
-                  <p className="sneaker-price">Price: ${sneaker.price.toFixed(2)}</p>
+                  <p className="sneaker-price">Price: ${parseInt(sneaker.price).toFixed(2)}</p>
                   <p className="sneaker-quantity">Quantity: {sneaker.quantity}</p>
                   <button
                     onClick={() => removeFromCart(sneaker)}
@@ -92,7 +91,7 @@ const Cart = () => {
           </ul>
 
           <div className="cart-summary">
-            <p className="total-amount">Total: ${totalAmount.toFixed(2)}</p>
+            <p className="total-amount">Total: ${parseInt(totalAmount).toFixed(2)}</p>
             <div className="cart-buttons">
               <button onClick={clearCart} className="clear-cart">Clear Cart</button>
               <button onClick={handlePayment} className="payment-button">Proceed to Payment</button>
