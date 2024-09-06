@@ -11,12 +11,13 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `sneakers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `stripe_price_id` varchar(255) DEFAULT NULL,
   `brand` varchar(255) DEFAULT NULL,
   `colorway` varchar(255) DEFAULT NULL,
   `estimatedMarketValue` decimal(10,2) DEFAULT NULL,
   `gender` varchar(255) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `links` varchar(255) DEFAULT NULL,
+  `image` text DEFAULT NULL,
+  `links` text DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `releaseDate` datetime DEFAULT NULL,
   `releaseYear` varchar(255) DEFAULT NULL,
@@ -28,30 +29,13 @@ CREATE TABLE `sneakers` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   `publishedAt` datetime DEFAULT NULL,
-  `createdBy_id` int(11) DEFAULT NULL,
-  `createdBy_firstname` varchar(255) DEFAULT NULL,
-  `createdBy_lastname` varchar(255) DEFAULT NULL,
-  `createdBy_username` varchar(255) DEFAULT NULL,
-  `createdBy_email` varchar(255) DEFAULT NULL,
-  `createdBy_isActive` tinyint(1) DEFAULT NULL,
-  `updatedBy_id` int(11) DEFAULT NULL,
-  `updatedBy_firstname` varchar(255) DEFAULT NULL,
-  `updatedBy_lastname` varchar(255) DEFAULT NULL,
-  `updatedBy_username` varchar(255) DEFAULT NULL,
-  `updatedBy_email` varchar(255) DEFAULT NULL,
-  `updatedBy_isActive` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
-<<<<<<< HEAD
-LOCK TABLES `sneakers` WRITE;
-UNLOCK TABLES;
-
 DROP TABLE IF EXISTS `users`;
-=======
->>>>>>> f0116628378b0f247c7225fe835209068d9e9668
 CREATE TABLE `users` (
   `id` int(11) AUTO_INCREMENT,
+  `stripe_customer_id` varchar(255) DEFAULT NULL,
   `firstname` varchar(255) DEFAULT NULL,
   `lastname` varchar(255) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
@@ -64,11 +48,6 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
-<<<<<<< HEAD
-
-LOCK TABLES `users` WRITE;
-UNLOCK TABLES;
-=======
 
 -- Optional: Lock tables for certain operations (usually not needed during schema setup)
 -- LOCK TABLES `sneakers` WRITE;
@@ -76,4 +55,3 @@ UNLOCK TABLES;
 
 -- LOCK TABLES `users` WRITE;
 -- UNLOCK TABLES;
->>>>>>> f0116628378b0f247c7225fe835209068d9e9668
