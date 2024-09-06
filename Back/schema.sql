@@ -45,9 +45,8 @@ CREATE TABLE `sneakers` (
 
 CREATE TABLE `users` (
   `id` int(11) AUTO_INCREMENT,
-  `firstname` varchar(255) DEFAULT NULL,
-  `lastname` varchar(255) DEFAULT NULL,
-  `username` varchar(255) NOT NULL,
+  `firstName` varchar(255) DEFAULT NULL,
+  `lastName` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `isActive` tinyint(1) DEFAULT NULL,
   `gender` varchar(255) DEFAULT NULL,
