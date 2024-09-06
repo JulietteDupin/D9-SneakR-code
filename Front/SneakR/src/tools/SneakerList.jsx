@@ -1,8 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 
-import "../../css/sneaker.css"
-
-
 const SneakerList = ({ sneakers, gender, setSelectedSneaker }) => {
   const navigate = useNavigate();
 

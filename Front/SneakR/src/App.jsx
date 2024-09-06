@@ -6,6 +6,9 @@ import Register from './pages/Register';
 import ProductPage from './pages/ProductPage';
 import Payment from './pages/Payment';
 import CategoryPage from './pages/CategoryPage';
+import PrivateRoute from './tools/PrivateRoute';
+import PublicRoute from './tools/PublicRoute';
+import Account from './pages/Account';
 import { CartProvider } from './context/CartContext';
 import Cart from './pages/Cart';
 
@@ -14,18 +17,63 @@ export default function App() {
 
   return (
     <CartProvider>
-        <div>
-            <Routes>
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/products" element={<Catalog setSelectedSneaker={setSelectedSneaker} />} />
-              <Route path="/product" element={<ProductPage sneaker={selectedSneaker} />} />
-              <Route path="/products/category/:gender" element={<CategoryPage setSelectedSneaker={setSelectedSneaker} />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/payment" element={<Payment />} />
-            </Routes>
-        </div>
+      <div>
+        <Routes>
+          {/* Main route */}
+          <Route path="/" element={
+            <PrivateRoute>
+              <Catalog setSelectedSneaker={setSelectedSneaker} />
+            </PrivateRoute >
+          } />
+
+          <Route path="/products" element={
+            <PrivateRoute>
+              <Catalog setSelectedSneaker={setSelectedSneaker} />
+            </PrivateRoute >
+          } />
+
+          {/* token protected routes */}
+          <Route path="/products/category/:gender" element={
+            <PrivateRoute>
+              <CategoryPage setSelectedSneaker={setSelectedSneaker} />
+            </PrivateRoute >
+          } />
+
+          <Route path="/product" element={<PrivateRoute>
+            <ProductPage sneaker={selectedSneaker} /></PrivateRoute>} />
+
+          <Route path="/account" element={<PrivateRoute>
+            <Account />
+          </PrivateRoute>
+          } />
+
+          {/* Cart route */}
+          <Route path="/cart" element={
+            <PrivateRoute>
+              <Cart />
+            </PrivateRoute >
+          } />
+
+          <Route path="/payment" element={<PrivateRoute>
+            <Payment />
+          </PrivateRoute>
+          } />
+
+          {/* public routes */}
+          <Route path="/login" element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute >
+          } />
+
+          <Route path="/register" element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute >
+          } />
+
+        </Routes>
+      </div >
     </CartProvider>
   );
 }
-

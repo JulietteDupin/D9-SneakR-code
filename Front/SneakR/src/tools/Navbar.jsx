@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import "../../css/navbar.css"
 import { Link } from 'react-router-dom';
+import { Button } from '../components/ui/button';
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,12 +15,12 @@ const Navbar = () => {
         <nav className={`navbar ${isOpen ? 'active' : ''}`}>
             <div className="logo">SneakR</div>
             <ul className="nav-links">
-                <li><Link to="/cart">Cart</Link></li>
                 <li><Link to="/products">Catalog</Link></li>
                 <li><Link to="/products/category/men">Men</Link></li>
                 <li><Link to="/products/category/women">Women</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
                 <li><Link to="/account">My Account</Link></li>
+                <li><Link to="/cart"><Button><AiOutlineShoppingCart />Cart</Button></Link></li>
             </ul>
             <div className="menu-toggle" onClick={toggleMenu}>
                 <span></span>
