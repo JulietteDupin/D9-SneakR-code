@@ -1,59 +1,49 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from '../tools/Navbar';
 import SneakerList from '../tools/SneakerList';
 import Pagination from '../tools/Pagination';
-import sneakersData from '../../../../Back/sneakers.json'
 
-import '../../css/style.css';
+import "../../css/style.css";
 
 export default function Catalog({ setSelectedSneaker }) {
   const navigate = useNavigate();
   const { gender } = useParams();
   const [error, setError] = useState(null);
-  const sneakers = sneakersData.data;
-
-
-  //On every render of the page, this function calls the sneakers api to create sneakers.json, and we retrieve the sneakers from sneakers.json. 
-  //TODO: put the sneakers.json directly in the database and change the request
-  async function fetchData() {
-    try {
-      fetch(import.meta.env.VITE_APP_PRODUCTS_ROUTE, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
-    } catch (error) {
-      console.error('Error:', error);
-      setError(error.message);
-    }
-  }
-
+  const [sneakers, setSneakers] = useState([]); // Initialize with an empty array
+  const [filteredSneakers, setFilteredSneakers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const sneakersPerPage = 25;
-
-  // Vérification de l'authentification (à remplacer par token JWT plus tard)
-  useEffect(() => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-
-    if (!isAuthenticated) {
-      navigate('/login');
-    } else {
-      fetchData();
-    }
-  }, [navigate]);
-
-  let filteredSneakers = !gender
-    ? sneakers
-    : sneakers.filter(sneaker => sneaker.attributes.gender.toLowerCase() === gender.toLowerCase());
-
+  const sneakersPerPage = 100;
+  const fetchDataRef = useRef();
   const indexOfLastSneaker = currentPage * sneakersPerPage;
   const indexOfFirstSneaker = indexOfLastSneaker - sneakersPerPage;
-  const currentSneakers = filteredSneakers.slice(indexOfFirstSneaker, indexOfLastSneaker);
-
+  const currentSneakers =  filteredSneakers ? filteredSneakers.slice(indexOfFirstSneaker, indexOfLastSneaker) : null;
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  useEffect(() => {
+    fetchDataRef.current = async () => {
+      try {
+        const response = await fetch(import.meta.env.VITE_APP_PRODUCTS_ROUTE, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+        const data = await response.json();
+        setSneakers(data);
+        setFilteredSneakers(!gender
+          ? data
+          : data.filter((sneaker) => sneaker.gender.toLowerCase() === gender.toLowerCase()));
+      } catch (error) {
+        console.error("Error:", error);
+        setError(error.message);
+      }
+    };
+
+    fetchDataRef.current();
+  }, [gender]);
+
 
   return (
     <div className='frame'>
@@ -63,12 +53,12 @@ export default function Catalog({ setSelectedSneaker }) {
         gender={gender || "all"}
         setSelectedSneaker={setSelectedSneaker}
       />
-      <Pagination
+      {/* <Pagination
         sneakersPerPage={sneakersPerPage}
         totalSneakers={filteredSneakers.length}
         paginate={paginate}
         currentPage={currentPage}
-      />
+      /> */}
     </div>
   );
 }

@@ -19,7 +19,7 @@ export default function CategoryPage({ setSelectedSneaker }) {
 
   const filteredSneakers = !gender
     ? sneakers
-    : sneakers.filter(sneaker => sneaker.attributes.gender.toLowerCase() === gender.toLowerCase());
+    : sneakers.filter(sneaker => sneaker.gender.toLowerCase() === gender.toLowerCase());
 
 
   const currentSneakers = filteredSneakers.slice(indexOfFirstSneaker, indexOfLastSneaker);
