@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
     }
 
     const customer = await stripe.customers.create({
-      name: username,
+      name: firstName + " " + lastName,
       email: email,
     });
 
