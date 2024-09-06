@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../config/db');
 const bcrypt = require('bcrypt');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -41,9 +42,14 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'Email already in use' });
     }
 
+    const customer = await stripe.customers.create({
+      name: username,
+      email: email,
+    });
+
     const [result] = await db.query(
-      'INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)',
-      [firstName, lastName, email, hashedPassword]
+      'INSERT INTO users (firstName, lastName, email, password, stripe_customer_id) VALUES (?, ?, ?, ?, ?)',
+      [firstName, lastName, email, hashedPassword, customer.id]
     );
 
     res.status(201).json({ id: result.insertId, firstName, lastName, email });
