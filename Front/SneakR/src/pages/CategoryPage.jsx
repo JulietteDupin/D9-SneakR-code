@@ -27,8 +27,9 @@ export default function CategoryPage({ setSelectedSneaker }) {
 
   // TODO: changer pour un token JWT
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-    if (!isAuthenticated) {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
       navigate('/login');
     }
   }, [navigate]);

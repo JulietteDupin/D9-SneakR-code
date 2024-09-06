@@ -11,7 +11,7 @@ const ProductPage = ({ sneaker }) => {
     <div className="product-page">
       <Navbar></Navbar>
       <div className="product-left">
-        <ProductImage src={sneaker.image.small} alt={sneaker.name} />
+        <ProductImage src={JSON.parse(sneaker.image).small} alt={sneaker.name} />
       </div>
       <div className="product-right">
         <ProductDetails 
@@ -61,7 +61,7 @@ const ProductOptions = ({ color, size, price }) => {
         <span>{size}</span>
       </div>
       <div className="price">
-        {/* <span>${price.toFixed(2)}</span> */}
+        <span>${parseInt(price).toFixed(2)}</span>
       </div>
     </div>
   );
