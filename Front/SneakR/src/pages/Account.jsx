@@ -82,8 +82,6 @@ export default function Account() {
       console.error('Error:', error);
       setError(error.message);
     }
-
-    console.log('User saved:', user);
   };
 
   return (
