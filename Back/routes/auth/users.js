@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../config/db');
 const bcrypt = require('bcrypt');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -30,14 +31,18 @@ router.get('/:id', async (req, res) => {
 // Create a new user
 router.post('/', async (req, res) => {
   const { username, email, password } = req.body;
+  const customer = await stripe.customers.create({
+    name: username,
+    email: email,
+  });
 
   const saltRounds = 10; // Number of salt rounds (higher means more secure but slower)
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   try {
     const [result] = await db.query(
-      'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-      [username, email, hashedPassword]
+      'INSERT INTO users (username, email, password, stripe_customer_id) VALUES (?, ?, ?)',
+      [username, email, hashedPassword, customer.id]
     );
     res.status(201).json({ id: result.insertId, username, email });
   } catch (err) {
