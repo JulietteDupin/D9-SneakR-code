@@ -11,9 +11,10 @@ const SneakerList = ({ sneakers, gender, setSelectedSneaker }) => {
 
   const filteredSneakers = gender === 'all'
     ? sneakers
-    : sneakers.filter(sneaker => sneaker.attributes.gender.toLowerCase() === gender.toLowerCase());
+    : sneakers.filter(sneaker => sneaker.gender.toLowerCase() === gender.toLowerCase());
 
   return (
+<<<<<<< HEAD
     <ul className="sneaker-list">
       {filteredSneakers.map(sneaker => (
         <li
@@ -29,6 +30,24 @@ const SneakerList = ({ sneakers, gender, setSelectedSneaker }) => {
           />
         </li>
       ))}
+=======
+    <ul className="sneaker-grid">
+      {filteredSneakers.map(sneaker => {
+        const parsedImage = JSON.parse(sneaker.image);
+
+        return (
+          <li
+            key={sneaker.id}
+            className="sneaker-item"
+            onClick={() => handleClick(sneaker)}
+          >
+            <img src={parsedImage.small} alt={sneaker.name} />
+            <p className="sneaker-name">{sneaker.name}</p>
+            <p className="sneaker-colorway">Colorway: {sneaker.colorway}</p>
+          </li>
+        );
+      })}
+>>>>>>> origin/shadcn
     </ul>
   );
 };
