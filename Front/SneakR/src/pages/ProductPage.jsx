@@ -1,8 +1,11 @@
 import React from 'react';
-import "../../css/sneaker.css"
+import "../../css/sneaker.css";
 import Navbar from '../tools/Navbar';
+import { useCart } from '../context/CartContext';
 
 const ProductPage = ({ sneaker }) => {
+  const { addToCart } = useCart();
+
   if (!sneaker) {
     return <div>Product not found</div>;
   }
@@ -24,7 +27,7 @@ const ProductPage = ({ sneaker }) => {
           size={sneaker.size} 
           price={sneaker.estimatedMarketValue} 
         />
-        <ProductActions />
+        <ProductActions addToCart={addToCart} product={sneaker} />
       </div>
     </div>
   );
@@ -68,10 +71,21 @@ const ProductOptions = ({ color, size, price }) => {
 };
 
 
-const ProductActions = () => {
+const ProductActions = ({ addToCart, product }) => {
+  
+  const item = {
+    id: product.id,
+    name: product.name,
+    price: product.estimatedMarketValue,
+    stripe_price_id: product.stripe_price_id,
+    image: JSON.parse(product.image).small,
+  };
+
   return (
     <div className="product-actions">
-      <button className="add-to-cart">Add to cart</button>
+      <button onClick={() => addToCart(item)} className="add-to-cart">
+        Add to Cart
+      </button>
       <button className="add-to-wishlist">Add to wishlist</button>
     </div>
   );
