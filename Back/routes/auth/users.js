@@ -30,22 +30,29 @@ router.get('/:id', async (req, res) => {
 
 // Create a new user
 router.post('/', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
+
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   try {
+    const [existingUser] = await db.query('SELECT email FROM users WHERE email = ?', [email]);
+
+    if (existingUser.length > 0) {
+      return res.status(400).json({ message: 'Email already in use' });
+    }
+
     const customer = await stripe.customers.create({
       name: username,
       email: email,
     });
-  
-    const saltRounds = 10; // Number of salt rounds (higher means more secure but slower)
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const [result] = await db.query(
-      'INSERT INTO users (username, email, password, stripe_customer_id) VALUES (?, ?, ?, ?)',
-      [username, email, hashedPassword, customer.id]
+      'INSERT INTO users (firstName, lastName, email, password, stripe_customer_id) VALUES (?, ?, ?, ?, ?)',
+      [firstName, lastName, email, hashedPassword, customer.id]
     );
-    res.status(201).json({ id: result.insertId, username, email });
+
+    res.status(201).json({ id: result.insertId, firstName, lastName, email });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
@@ -54,15 +61,15 @@ router.post('/', async (req, res) => {
 // Update a user by ID
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { username, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
-  const saltRounds = 10; // Number of salt rounds (higher means more secure but slower)
+  const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   try {
     const [result] = await db.query(
-      'UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?',
-      [username, email, hashedPassword, id]
+      'UPDATE users SET firstName = ?, lastName = ?, email = ?, password = ? WHERE id = ?',
+      [firstName, lastName, email, hashedPassword, id]
     );
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'User not found' });
