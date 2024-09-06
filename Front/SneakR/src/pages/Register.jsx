@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { FaUser, FaLock } from 'react-icons/fa'
 
 export default function Register() {
   const navigate = useNavigate();
-  const [name, setname] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,7 +19,7 @@ export default function Register() {
       return;
     }
 
-    if (!name || !password || !email) {
+    if (!firstName || !lastName || !password || !email) {
       setError('Please fill in all fields');
       return;
     }
@@ -30,10 +31,14 @@ export default function Register() {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': "*",
         },
-        body: JSON.stringify({ "username": name, "email": email, "password": password })
+        body: JSON.stringify({ "firstName": firstName, "lastName": lastName, "email": email, "password": password })
       })
+
+      const data = await response.json();
+
       if (response.ok) {
         console.log('User created')
+        localStorage.setItem('token', data.token);
         navigate('/login');
       } else {
         console.error(response)
@@ -43,49 +48,38 @@ export default function Register() {
       console.error('Error:', error)
       setError(error.message)
     }
-    // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
-    localStorage.setItem('name', name);
-    localStorage.setItem('password', password);
-    localStorage.setItem('email', email);
   };
 
   return (
-    <div>
+    <div className='wrapper'>
       <h1>Register</h1>
       <form onSubmit={handleRegister}>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div>
-          <label>name: </label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setname(e.target.value)}
-          />
+        <div className='input-box'>
+          <input type="text" placeholder='First Name' value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+          <FaUser className='icon' />
         </div>
-        <div>
-          <label>Email: </label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+
+        <div className='input-box'>
+          <input type="text" placeholder='Last Name' value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+          <FaUser className='icon' />
         </div>
-        <div>
-          <label>Password: </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+
+        <div className='input-box'>
+          <input type="text" placeholder='Email address' value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <FaUser className='icon' />
         </div>
-        <div>
-          <label>Confirm Password: </label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+
+        <div className='input-box'>
+          <input type="text" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <FaLock className='icon' />
         </div>
+
+        <div className='input-box'>
+          <input type="text" placeholder='Confirm Password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <FaLock className='icon' />
+        </div>
+
         <button type="submit">Register</button>
       </form>
     </div>
