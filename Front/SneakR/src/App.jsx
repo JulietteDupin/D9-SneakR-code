@@ -8,7 +8,7 @@ import Payment from './pages/Payment';
 import CategoryPage from './pages/CategoryPage';
 import PrivateRoute from './tools/PrivateRoute';
 import PublicRoute from './tools/PublicRoute';
-import Account from './pages/Account';
+import ProfileSettings from './pages/Account';
 
 export default function App() {
   const [selectedSneaker, setSelectedSneaker] = useState(null);
@@ -40,7 +40,7 @@ export default function App() {
           <ProductPage sneaker={selectedSneaker} /></PrivateRoute>} />
 
         <Route path="/account" element={<PrivateRoute>
-          <Account />
+          <ProfileSettings />
         </PrivateRoute>
         } />
 

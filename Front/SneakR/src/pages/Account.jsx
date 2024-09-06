@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import getUserIdFromToken from '../tools/handleJWT';
-import '../../css/account.css';
+"use client"
+
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Textarea } from "@/components/ui/textarea"
+import getUserIdFromToken from '../tools/handleJWT'
 
 // Fonction pour formater la date au format MM/DD/YYYY
 const formatDateToMMDDYYYY = (date) => {
@@ -20,13 +27,13 @@ const formatDateToYYYYMMDD = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-export default function Account() {
+export default function ProfileSettings() {
   const [user, setUser] = useState({
     firstName: '',
     lastName: '',
-    birthDate: '',
+    birthdate: '',
     email: '',
-    password: ''
+    password: '' // Ajout du mot de passe ici
   });
   const [error, setError] = useState('');
   const [editMode, setEditMode] = useState(false);
@@ -54,8 +61,8 @@ export default function Account() {
             firstName: data.firstname,
             lastName: data.lastname,
             email: data.email,
-            birthDate: data.birthdate ? formatDateToMMDDYYYY(data.birthdate) : '', // Formate la date en MM/DD/YYYY
-            password: ''
+            birthdate: data.birthdate ? formatDateToMMDDYYYY(data.birthdate) : '', // Formate la date en MM/DD/YYYY
+            password: '' // Le mot de passe est vide par défaut
           });
         } else {
           setError('Failed to fetch user data');
@@ -82,7 +89,7 @@ export default function Account() {
     // Avant d'envoyer les données au backend, formate la date en YYYY-MM-DD
     const updatedUser = { 
       ...user, 
-      birthDate: formatDateToYYYYMMDD(user.birthDate) 
+      birthdate: formatDateToYYYYMMDD(user.birthdate) 
     };
 
     try {
@@ -110,91 +117,87 @@ export default function Account() {
   };
 
   return (
-    <div className="profile-page">
-      <h1>My Account</h1>
-      {error && <p className="error-message">{error}</p>}
-      <div className="profile-details">
-        <div className="profile-field">
-          <label>First Name</label>
-          {editMode ? (
-            <input
-              type="text"
-              name="firstName"
-              value={user.firstName}
-              onChange={handleChange}
-            />
-          ) : (
-            <p>{user.firstName}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label>Last Name</label>
-          {editMode ? (
-            <input
-              type="text"
-              name="lastName"
-              value={user.lastName}
-              onChange={handleChange}
-            />
-          ) : (
-            <p>{user.lastName}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label>Birth date</label>
-          {editMode ? (
-            <input
-              type="text"
-              name="birthDate"
-              value={user.birthDate}  // Affiche la date au format MM/DD/YYYY
-              onChange={handleChange}
-              placeholder="MM/DD/YYYY"
-            />
-          ) : (
-            <p>{user.birthDate}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label>Email</label>
-          {editMode ? (
-            <input
-              type="text"
-              name="email"
-              value={user.email}
-              onChange={handleChange}
-            />
-          ) : (
-            <p>{user.email}</p>
-          )}
-        </div>
-
-        <div className="profile-field">
-          <label>Password</label>
-          {editMode ? (
-            <input
-              type="password"
-              name="password"
-              value={user.password}
-              onChange={handleChange}
-              placeholder="Enter new password"
-            />
-          ) : passwordUpdated ? (
-            <p>••••••••••</p>
-          ) : (
-            <p>••••••••••</p>
-          )}
-        </div>
-
-        <div className="profile-actions">
-          {editMode ? (
-            <button onClick={handleSave}>Save Changes</button>
-          ) : (
-            <button onClick={() => setEditMode(true)}>Edit Profile</button>
-          )}
-        </div>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto py-10">
+        <Card className="w-full">
+          <CardHeader>
+            <div className="flex items-center space-x-4">
+              <Avatar className="w-16 h-16">
+                <AvatarImage src="/placeholder.svg?height=64&width=64" alt="User avatar" />
+                <AvatarFallback>JD</AvatarFallback>
+              </Avatar>
+              <div>
+                <CardTitle className="text-3xl">Personal Info</CardTitle>
+                <CardDescription className="text-lg">Update your personal details.</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First name</Label>
+                  <Input 
+                    id="firstName" 
+                    name="firstName" 
+                    value={user.firstName} 
+                    onChange={handleChange} 
+                    placeholder="John" 
+                    disabled={!editMode}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last name</Label>
+                  <Input 
+                    id="lastName" 
+                    name="lastName" 
+                    value={user.lastName} 
+                    onChange={handleChange} 
+                    placeholder="Doe" 
+                    disabled={!editMode}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="birthdate">Birthdate</Label>
+                  <Input 
+                    id="birthdate" 
+                    name="birthdate" 
+                    value={user.birthdate} 
+                    onChange={handleChange} 
+                    placeholder="MM/DD/YYYY" 
+                    disabled={!editMode}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input 
+                    id="password" 
+                    name="password" 
+                    type="password"
+                    value={user.password} 
+                    onChange={handleChange} 
+                    placeholder="Enter new password" 
+                    disabled={!editMode}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="bio">Bio</Label>
+                <Textarea id="bio" placeholder="Tell us about yourself" className="min-h-[100px]" disabled={!editMode} />
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-end space-x-4">
+            {editMode ? (
+              <>
+                <Button variant="outline" onClick={() => setEditMode(false)}>Cancel</Button>
+                <Button onClick={handleSave}>Save changes</Button>
+              </>
+            ) : (
+              <Button onClick={() => setEditMode(true)}>Edit Profile</Button>
+            )}
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );
