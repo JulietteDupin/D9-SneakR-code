@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Chrome, Facebook, Apple } from "lucide-react"
+import {  Facebook, Apple } from "lucide-react"
 
+import '../../css/login.css'
+import { Button } from '../components/ui/button';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,34 +14,35 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // eslint-disable-next-line no-useless-catch
     try {
       let response = await fetch(import.meta.env.VITE_APP_LOGIN_ROUTE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': "*",
+          'Access-Control-Allow-Origin': '*',
         },
-        body: JSON.stringify({'email':email, 'password':password})
-      })
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
       if (response.ok) {
+        localStorage.setItem('token', data.token);
+
         alert('Login successful');
         navigate('/products');
       } else {
-        alert('Invalid credentials');
+        alert('Credentials are invalid');
       }
-    } catch(error) {
-        throw error
+    } catch (error) {
+      console.error('Error during login', error);
     }
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('password', password);
-    localStorage.setItem('email', email);
   };
 
   const handleGoogleSuccess = (response) => {
     const { credential } = response;
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('googleToken', credential);
+    localStorage.setItem('token', credential);
+    alert('Google login successful');
     navigate('/products');
   };
 
@@ -84,12 +82,12 @@ export default function Login() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c33035]"
               />
             </div>
-            <button
+            <Button
               type="submit"
               className="w-full py-2 px-4 bg-black hover:bg-gray-800 text-white font-semibold rounded-md transition duration-200"
             >
               Sign In
-            </button>
+            </Button>
           </form>
           <div className="text-sm text-center space-y-2">
             <a href="#" className="text-[#c33035] hover:underline">Forgot password?</a>
@@ -116,14 +114,14 @@ export default function Login() {
               />
             </div>
             <div className="grid grid-cols-2 gap-2">
-              <button className="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-50 transition duration-200">
+              <Button className="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-50 transition duration-200">
                 <Facebook className="w-5 h-5 mr-2" />
                 Facebook
-              </button>
-              <button className="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-50 transition duration-200">
+              </ Button>
+              <Button className="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-50 transition duration-200">
                 <Apple className="w-5 h-5 mr-2" />
                 Apple
-              </button>
+              </Button>
             </div>
           </div>
         </div>
