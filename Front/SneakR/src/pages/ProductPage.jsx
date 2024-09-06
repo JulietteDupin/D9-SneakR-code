@@ -11,18 +11,18 @@ const ProductPage = ({ sneaker }) => {
     <div className="product-page">
       <Navbar></Navbar>
       <div className="product-left">
-        <ProductImage src={sneaker.attributes.image.small} alt={sneaker.attributes.name} />
+        <ProductImage src={sneaker.image.small} alt={sneaker.name} />
       </div>
       <div className="product-right">
         <ProductDetails 
-          title={sneaker.attributes.name} 
-          description={sneaker.attributes.description} 
-          highlights={sneaker.attributes.highlights} 
+          title={sneaker.name} 
+          description={sneaker.description} 
+          highlights={sneaker.highlights} 
         />
         <ProductOptions 
-          color={sneaker.attributes.colorway} 
-          size={sneaker.attributes.size} 
-          price={sneaker.attributes.estimatedMarketValue} 
+          color={sneaker.colorway} 
+          size={sneaker.size} 
+          price={sneaker.estimatedMarketValue} 
         />
         <ProductActions />
       </div>
@@ -61,7 +61,7 @@ const ProductOptions = ({ color, size, price }) => {
         <span>{size}</span>
       </div>
       <div className="price">
-        <span>${price.toFixed(2)}</span>
+        {/* <span>${price.toFixed(2)}</span> */}
       </div>
     </div>
   );
