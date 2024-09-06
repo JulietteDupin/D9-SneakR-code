@@ -1,22 +1,23 @@
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass';
-
+ 
 FLUSH PRIVILEGES;
-
+ 
 CREATE DATABASE SneakR;
-
+ 
 USE SneakR;
-
+ 
 DROP TABLE IF EXISTS `sneakers`;
 DROP TABLE IF EXISTS `users`;
-
+ 
 CREATE TABLE `sneakers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `stripe_price_id` varchar(255) DEFAULT NULL,
   `brand` varchar(255) DEFAULT NULL,
   `colorway` varchar(255) DEFAULT NULL,
   `estimatedMarketValue` decimal(10,2) DEFAULT NULL,
   `gender` varchar(255) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `links` varchar(255) DEFAULT NULL,
+  `image` text DEFAULT NULL,
+  `links` text DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `releaseDate` datetime DEFAULT NULL,
   `releaseYear` varchar(255) DEFAULT NULL,
@@ -28,25 +29,15 @@ CREATE TABLE `sneakers` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   `publishedAt` datetime DEFAULT NULL,
-  `createdBy_id` int(11) DEFAULT NULL,
-  `createdBy_firstname` varchar(255) DEFAULT NULL,
-  `createdBy_lastname` varchar(255) DEFAULT NULL,
-  `createdBy_username` varchar(255) DEFAULT NULL,
-  `createdBy_email` varchar(255) DEFAULT NULL,
-  `createdBy_isActive` tinyint(1) DEFAULT NULL,
-  `updatedBy_id` int(11) DEFAULT NULL,
-  `updatedBy_firstname` varchar(255) DEFAULT NULL,
-  `updatedBy_lastname` varchar(255) DEFAULT NULL,
-  `updatedBy_username` varchar(255) DEFAULT NULL,
-  `updatedBy_email` varchar(255) DEFAULT NULL,
-  `updatedBy_isActive` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
-
+ 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) AUTO_INCREMENT,
-  `firstName` varchar(255) DEFAULT NULL,
-  `lastName` varchar(255) DEFAULT NULL,
+  `stripe_customer_id` varchar(255) DEFAULT NULL,
+  `firstname` varchar(255) DEFAULT NULL,
+  `lastname` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `isActive` tinyint(1) DEFAULT NULL,
   `gender` varchar(255) DEFAULT NULL,
@@ -56,10 +47,10 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
-
+ 
 -- Optional: Lock tables for certain operations (usually not needed during schema setup)
 -- LOCK TABLES `sneakers` WRITE;
 -- UNLOCK TABLES;
-
+ 
 -- LOCK TABLES `users` WRITE;
 -- UNLOCK TABLES;

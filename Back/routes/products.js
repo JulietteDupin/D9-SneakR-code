@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { getSneakers } = require('../api');
-const sneakersJson = require('../sneakers.json')
- 
+const db = require('../config/db');
+
 router.get('/', async (req, res) => {
     try {
-        getSneakers();
-        const sneakers = JSON.stringify(sneakersJson);
-        return sneakers;
+      const [sneakers] = await db.query('SELECT * FROM sneakers');
+      res.json(sneakers)
     } catch (err) {
-      res.status(500).json({ message: 'Failed to retreive the products from the API', error: err.message });
+      console.log(err)
     }
-  });
+});
 
-module.exports = router ;
+module.exports = router;
