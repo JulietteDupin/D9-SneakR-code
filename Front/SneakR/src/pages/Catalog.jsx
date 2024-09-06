@@ -5,6 +5,7 @@ import SneakerList from '../tools/SneakerList';
 import Pagination from '../tools/Pagination';
 
 import "../../css/style.css";
+import { Button } from "../components/ui/button";
 
 export default function Catalog({ setSelectedSneaker }) {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ export default function Catalog({ setSelectedSneaker }) {
         gender={gender || "all"}
         setSelectedSneaker={setSelectedSneaker}
       />
+      <Button variant="destructive" size="lg" >HEHHHHHHPPPPPPPPPPP</Button>
       {/* <Pagination
         sneakersPerPage={sneakersPerPage}
         totalSneakers={filteredSneakers.length}
