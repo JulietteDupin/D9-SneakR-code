@@ -33,8 +33,8 @@ export default function Account() {
         const data = await response.json();
         if (response.ok) {
           setUser({
-            firstName: data.firstName,
-            lastName: data.lastName,
+            firstName: data.firstname,
+            lastName: data.lastname,
             email: data.email,
             password: ''
           });
