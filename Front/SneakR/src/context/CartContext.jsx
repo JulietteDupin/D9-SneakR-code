@@ -10,6 +10,8 @@ function cartReducer(state, action) {
     case 'ADD_TO_CART': {
       const itemToAdd = action.payload;
 
+      console.log("itemToAdd", itemToAdd);
+
       const existingItem = state.cartItems.find((item) => item.id === itemToAdd.id);
 
       if (existingItem) {
@@ -20,13 +22,13 @@ function cartReducer(state, action) {
         return {
           ...state,
           cartItems: updatedCartItems,
-          totalAmount: state.totalAmount + itemToAdd.price,
+          totalAmount: state.totalAmount + parseInt(itemToAdd.price),
         };
       } else {
         return {
           ...state,
           cartItems: [...state.cartItems, { ...itemToAdd, quantity: 1 }],
-          totalAmount: state.totalAmount + itemToAdd.price,
+          totalAmount: state.totalAmount + parseInt(itemToAdd.price),
         };
       }
     }
@@ -41,7 +43,7 @@ function cartReducer(state, action) {
       return {
         ...state,
         cartItems: updatedCart,
-        totalAmount: state.totalAmount - action.payload.price,
+        totalAmount: state.totalAmount - parseInt(action.payload.price),
       };
     }
 
@@ -60,6 +62,8 @@ export function CartProvider({ children }) {
   console.log("cart items", state.cartItems);
 
   const addToCart = (item) => {
+    console.log("addToCart", item);
+
     dispatch({ type: 'ADD_TO_CART', payload: item });
   };
 

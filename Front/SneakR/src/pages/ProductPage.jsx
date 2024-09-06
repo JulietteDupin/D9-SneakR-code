@@ -4,6 +4,7 @@ import Navbar from '../tools/Navbar';
 import { useCart } from '../context/CartContext';
 
 const ProductPage = ({ sneaker }) => {
+  console.log("sneaker", sneaker);
   const { addToCart } = useCart();
 
   if (!sneaker) {
@@ -14,18 +15,18 @@ const ProductPage = ({ sneaker }) => {
     <div className="product-page">
       <Navbar />
       <div className="product-left">
-        <ProductImage src={sneaker.attributes.image.small} alt={sneaker.attributes.name} />
+        <ProductImage src={JSON.parse(sneaker.image).small} alt={sneaker.name} />
       </div>
       <div className="product-right">
         <ProductDetails 
-          title={sneaker.attributes.name} 
-          description={sneaker.attributes.description} 
-          highlights={sneaker.attributes.highlights} 
+          title={sneaker.name} 
+          description={sneaker.description} 
+          highlights={sneaker.highlights} 
         />
         <ProductOptions 
-          color={sneaker.attributes.colorway} 
-          size={sneaker.attributes.size} 
-          price={sneaker.attributes.estimatedMarketValue} 
+          color={sneaker.colorway} 
+          size={sneaker.size} 
+          price={sneaker.estimatedMarketValue} 
         />
         {/* Pass addToCart and sneaker to ProductActions */}
         <ProductActions addToCart={addToCart} product={sneaker} />
@@ -65,7 +66,7 @@ const ProductOptions = ({ color, size, price }) => {
         <span>{size}</span>
       </div>
       <div className="price">
-        <span>${price.toFixed(2)}</span>
+        <span>${parseInt(price).toFixed(2)}</span>
       </div>
     </div>
   );
@@ -76,9 +77,10 @@ const ProductActions = ({ addToCart, product }) => {
   // Structure the product data to match what addToCart expects
   const item = {
     id: product.id,
-    name: product.attributes.name,
-    price: product.attributes.estimatedMarketValue,
-    image: product.attributes.image.small,
+    name: product.name,
+    price: product.estimatedMarketValue,
+    stripe_price_id: product.stripe_price_id,
+    image: JSON.parse(product.image).small,
   };
 
   return (
