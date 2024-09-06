@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
+import { FaUser, FaLock } from 'react-icons/fa'
+
+import '../../css/login.css'
 
 export default function Login() {
   const navigate = useNavigate();
@@ -24,6 +27,7 @@ export default function Login() {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
+
         alert('Login successful');
         navigate('/products');
       } else {
@@ -47,42 +51,39 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className='wrapper'>
+      <h1>Welcome back</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email: </label>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+        <div className='input-box'>
+          <input type="text" placeholder='Email address' value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <FaUser className='icon' />
         </div>
-        <div>
-          <label>Password: </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        <div className='input-box'>
+          <input type="text" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <FaLock className='icon' />
         </div>
+        <div className='remember-forgot'>
+          <a href='#'>Forgot password?</a>
+        </div>
+
         <button type="submit">Login</button>
+
+        <p>Or sign in with Google:</p>
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={handleGoogleFailure}
+          text="signin_with"
+          shape="rectangular"
+          theme="outline"
+          size="large"
+        />
+
+        <div className='register-link'>
+          <p>Don't have an account ? <Link to="/register">Register</Link></p>
+        </div>
       </form>
-
-      <p>Or sign in with Google:</p>
-      <GoogleLogin
-        onSuccess={handleGoogleSuccess}
-        onError={handleGoogleFailure}
-        text="signin_with"
-        shape="rectangular"
-        theme="outline"
-        size="large"
-        width="300"
-      />
-
-      <p>Don't have an account? <Link to="/register">Register here</Link></p>
     </div>
   );
 }
+
+

@@ -1,0 +1,166 @@
+body {
+    background-image: url('../public/assets/login-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper {
+    width: 120%;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    color: #fff;
+    border-radius: 10px;
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+form {
+    width: 100%;
+}
+
+.wrapper h1 {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background: salmon;
+    border-radius: 40px;
+    margin: 20px 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 1rem;
+    color: #fff;
+    padding: 0 45px 0 20px;
+}
+
+.input-box input::placeholder {
+    color: #fff;
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+}
+
+.wrapper .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: 15px 0;
+}
+
+.wrapper .remember-forgot label input {
+    accent-color: #fff;
+    font-size: 16px;
+}
+
+.wrapper button {
+    width: 100%;
+    height: 45px;
+    background: #ee3737;
+    border: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.wrapper .register-link {
+    font-size: 14px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.wrapper .register-link p a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.wrapper p {
+    margin-bottom: 10px;
+}
+
+.wrapper .register-link p a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .wrapper {
+        padding: 20px;
+    }
+
+    .wrapper h1 {
+        font-size: 1.8rem;
+    }
+
+    .input-box input {
+        font-size: 0.9rem;
+    }
+
+    .input-box .icon {
+        font-size: 14px;
+    }
+
+    .wrapper button {
+        font-size: 14px; 
+    }
+
+    .wrapper .remember-forgot {
+        flex-direction: column;
+        align-items: center;
+        font-size: 13px;
+    }
+
+    .wrapper .remember-forgot label,
+    .wrapper .remember-forgot a {
+        margin: 5px 0;
+    }
+}
+
+@media (min-width: 900px) {
+    .wrapper {
+        max-width: 500px;
+        padding: 40px;
+    }
+
+    .wrapper h1 {
+        font-size: 2.2rem;
+    }
+
+    .input-box input {
+        font-size: 1.1rem;
+    }
+
+    .wrapper button {
+        font-size: 18px;
+    }
+}
