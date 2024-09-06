@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import {  Facebook, Apple } from "lucide-react"
-
+import logo from '../assets/logo_brand.png'
 import '../../css/login.css'
 import { Button } from '../components/ui/button';
 
@@ -56,8 +56,9 @@ export default function Login() {
       <div className="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden">
         <div className="p-6 space-y-6">
           <div className="space-y-1 text-center">
-            <h1 className="text-2xl font-bold">Sign in</h1>
-            <p className="text-sm text-gray-500">Enter your email and password to login</p>
+          <div className="flex mb-10 justify-center">
+          <img className="h-20 w-30 mt-5" src={logo}></img>
+        </div>
           </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -68,6 +69,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                placeholder="Enter your email"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c33035]"
               />
             </div>
@@ -76,6 +78,7 @@ export default function Login() {
               <input
                 id="password"
                 type="password"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -86,7 +89,7 @@ export default function Login() {
               type="submit"
               className="w-full py-2 px-4 bg-black hover:bg-gray-800 text-white font-semibold rounded-md transition duration-200"
             >
-              Sign In
+              Log In
             </Button>
           </form>
           <div className="text-sm text-center space-y-2">
