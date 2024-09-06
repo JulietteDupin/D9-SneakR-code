@@ -55,15 +55,15 @@ router.post('/', async (req, res) => {
 // Update a user by ID
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, birthdate, email, password } = req.body;
 
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   try {
     const [result] = await db.query(
-      'UPDATE users SET firstName = ?, lastName = ?, email = ?, password = ? WHERE id = ?',
-      [firstName, lastName, email, hashedPassword, id]
+      'UPDATE users SET firstName = ?, lastName = ?, birthdate = ?, email = ?, password = ? WHERE id = ?',
+      [firstName, lastName, birthdate, email, hashedPassword, id]
     );
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'User not found' });
