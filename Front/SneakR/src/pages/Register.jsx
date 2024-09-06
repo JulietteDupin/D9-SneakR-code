@@ -39,6 +39,7 @@ export default function Register() {
       if (response.ok) {
         console.log('User created')
         localStorage.setItem('token', data.token);
+        console.log("here");
         navigate('/login');
       } else {
         console.error(response)
