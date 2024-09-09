@@ -1,0 +1,51 @@
+services:
+  mysql:
+    build:
+      context: .
+    container_name: mysql_prod_container
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./app:/docker-entrypoint-initdb.d/
+    networks:
+      - my_network
+
+  backend:
+    build:
+      context: ./Back/
+    container_name: backend_container
+    environment:
+      NODE_ENV: production
+    ports:
+      - "5000:5000" 
+    depends_on:
+      - mysql
+    networks:
+      - my_network
+
+  frontend:
+    build:
+      context: ./Front/SneakR/
+    container_name: frontend_container
+    environment:
+      NODE_ENV: production
+    ports:
+      - "5173:3000" 
+    networks:
+      - my_network
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  my_network:
+    driver: bridge
