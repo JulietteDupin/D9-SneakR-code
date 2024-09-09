@@ -39,6 +39,8 @@ export default function ProfileSettings() {
     lastName: '',
     birthdate: '',
     email: '',
+    size: '',
+    favorite_category : '',
     password: '' // Ajout du mot de passe ici
   });
   const [error, setError] = useState('');
@@ -68,7 +70,9 @@ export default function ProfileSettings() {
             lastName: data.lastname,
             email: data.email,
             birthdate: data.birthdate ? formatDateToMMDDYYYY(data.birthdate) : '', // Formate la date en MM/DD/YYYY
-            password: '' // Le mot de passe est vide par défaut
+            password: '', // Le mot de passe est vide par défaut,
+            shoeSize: data.size,
+            favoriteCategory: data.favorite_category
           });
         } else {
           setError('Failed to fetch user data');
@@ -211,9 +215,9 @@ export default function ProfileSettings() {
                     <Input 
                       id="shoeSize" 
                       name="shoeSize" 
-                      value={32} //en dur pour l'instant car on a pas la taille de chaussure dans la db lol
+                      value={user.shoeSize} 
                       onChange={handleChange} 
-                      placeholder="10" 
+                      placeholder="Enter your shoe size" 
                       disabled={!editMode}
                     />
                   </div>
@@ -221,7 +225,7 @@ export default function ProfileSettings() {
                     <Label htmlFor="favoriteBrand">Favorite Brand</Label>
                     <Select
                       onValueChange={handleSelectChange('favoriteBrand')} 
-                      defaultValue={user.favoriteBrand}
+                      defaultValue={user.favorite_category}
                       disabled={!editMode}
                     >
                       <SelectTrigger>
@@ -233,25 +237,6 @@ export default function ProfileSettings() {
                         <SelectItem value="Jordan">Jordan</SelectItem>
                         <SelectItem value="Yeezy">Yeezy</SelectItem>
                         <SelectItem value="New Balance">New Balance</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="preferredStyle">Preferred Style</Label>
-                    <Select 
-                      onValueChange={handleSelectChange('preferredStyle')} 
-                      defaultValue={user.preferredStyle}
-                      disabled={!editMode}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select preferred style" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Running">Running</SelectItem>
-                        <SelectItem value="Basketball">Basketball</SelectItem>
-                        <SelectItem value="Lifestyle">Lifestyle</SelectItem>
-                        <SelectItem value="Skateboarding">Skateboarding</SelectItem>
-                        <SelectItem value="Tennis">Tennis</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
