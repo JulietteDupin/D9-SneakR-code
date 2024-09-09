@@ -93,7 +93,7 @@ const ProductActions = ({ addToCart, product }) => {
       <button
         key={size}
         onClick={() => {item.size = size; addToCart(item);}}
-        className="button-size"
+        className="add-to-cart"
       >
         {`${item.gender} Size ${size} - Stock: ${stockValue.stock}`}
       </button>
@@ -103,14 +103,13 @@ const ProductActions = ({ addToCart, product }) => {
   }, [item])
 
   return (
-    <div className="product-actions">
-      <div id="button-container">
+    <div>
+      <div className="product-actions">
         {buttonSizes}
       </div>
-      <button disabled= {item.stock == 0 ? true : false} onClick={() => addToCart(item)} className="add-to-cart">
-        Add to Cart
-      </button>
-      <button className="add-to-wishlist">Add to wishlist</button>
+      <div className="product-actions">
+        <button className="add-to-wishlist">Add to wishlist</button>
+      </div>
     </div>
   );
 };
