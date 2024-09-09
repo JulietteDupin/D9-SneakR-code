@@ -40,7 +40,6 @@ export default function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log('User created')
         navigate('/login');
       } else {
         console.error(response)

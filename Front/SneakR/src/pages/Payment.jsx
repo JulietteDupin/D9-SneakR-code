@@ -46,7 +46,6 @@ const handlePayment = async (e) => {
         }
       }
       if (response.ok) {
-        console.log('User created')
         navigate('/login');
       } else {
         console.error(response)
