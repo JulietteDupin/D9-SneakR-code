@@ -95,7 +95,7 @@ const Cart = () => {
                 <div className="sneaker-details">
                   <p className="sneaker-name">{sneaker.name || 'Unknown Sneaker'}</p>
                   <p className="sneaker-price">Price: ${parseInt(sneaker.price).toFixed(2)}</p>
-                  <p>Size: ${parseInt(sneaker.size)}</p>
+                  <p>Size: {parseInt(sneaker.size)}</p>
                   <p className="sneaker-quantity">Quantity: {sneaker.quantity}</p>
                   <button
                     onClick={() => removeFromCart(sneaker)}
