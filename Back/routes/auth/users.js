@@ -57,22 +57,27 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
-
 // Update a user by ID
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, birthdate, email, password } = req.body;
+  const { firstName, lastName, birthdate, email, password, size, favorite_category } = req.body;
 
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  // Check if password is provided
+  let hashedPassword;
+  if (password) {
+    const saltRounds = 10;
+    hashedPassword = await bcrypt.hash(password, saltRounds);
+  }
 
   try {
     const [result] = await db.query(
-      'UPDATE users SET firstName = ?, lastName = ?, birthdate = ?, email = ?, password = ? WHERE id = ?',
-      [firstName, lastName, birthdate, email, hashedPassword, id]
-    );
+      `UPDATE users SET firstname = ?, lastname = ?, birthdate = ?, email = ?${
+        hashedPassword ? ', password = ?' : ''
+      }, size = ?, favorite_category = ? WHERE id = ?`,
+      [firstName, lastName, birthdate, email, hashedPassword || '', size, favorite_category, id]
+    ); 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'No rows were updated' });
     }
     res.json({ message: 'User updated' });
   } catch (err) {

@@ -71,8 +71,8 @@ export default function ProfileSettings() {
             email: data.email,
             birthdate: data.birthdate ? formatDateToMMDDYYYY(data.birthdate) : '', // Formate la date en MM/DD/YYYY
             password: '', // Le mot de passe est vide par défaut,
-            shoeSize: data.size,
-            favoriteCategory: data.favorite_category
+            size: data.size,
+            favorite_category: data.favorite_category
           });
         } else {
           setError('Failed to fetch user data');
@@ -88,6 +88,7 @@ export default function ProfileSettings() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    console.error(name, value)
     setUser(prevUser => ({ ...prevUser, [name]: value }))
   }
 
@@ -103,9 +104,9 @@ export default function ProfileSettings() {
     // Avant d'envoyer les données au backend, formate la date en YYYY-MM-DD
     const updatedUser = { 
       ...user, 
-      birthdate: formatDateToYYYYMMDD(user.birthdate) 
+      birthdate: formatDateToYYYYMMDD(user.birthdate)
     };
-
+    console.error(updatedUser)
     try {
       const response = await fetch(`${import.meta.env.VITE_APP_USERS_ROUTE}/${userId}`, {
         method: 'PUT',
@@ -215,7 +216,7 @@ export default function ProfileSettings() {
                     <Input 
                       id="shoeSize" 
                       name="shoeSize" 
-                      value={user.shoeSize} 
+                      value={user.size} 
                       onChange={handleChange} 
                       placeholder="Enter your shoe size" 
                       disabled={!editMode}
