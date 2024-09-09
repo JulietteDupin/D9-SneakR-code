@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import "../../css/sneaker.css";
 import Navbar from '../tools/Navbar';
 import { useCart } from '../context/CartContext';
@@ -72,18 +72,42 @@ const ProductOptions = ({ color, size, price }) => {
 
 
 const ProductActions = ({ addToCart, product }) => {
-  
+  console.log("product", product);
+  const [buttonSizes, setButtonSizes] = useState([]);
+
   const item = {
     id: product.id,
     name: product.name,
     price: product.estimatedMarketValue,
     stripe_price_id: product.stripe_price_id,
     image: JSON.parse(product.image).small,
+    stock: JSON.parse(product.stock),
+    gender: product.gender,
+    size: 0
   };
+
+  console.log("items", item);
+  useEffect(() => {
+    if (item && item.stock) {
+    const buttonList = Object.entries(item.stock).map(([size, stockValue]) => (
+      <button
+        key={size}
+        onClick={() => {item.size = size; addToCart(item);}}
+        className="button-size"
+      >
+        {`${item.gender} Size ${size} - Stock: ${stockValue.stock}`}
+      </button>
+    ));
+    setButtonSizes(buttonList);
+    }
+  }, [item])
 
   return (
     <div className="product-actions">
-      <button onClick={() => addToCart(item)} className="add-to-cart">
+      <div id="button-container">
+        {buttonSizes}
+      </div>
+      <button disabled= {item.stock == 0 ? true : false} onClick={() => addToCart(item)} className="add-to-cart">
         Add to Cart
       </button>
       <button className="add-to-wishlist">Add to wishlist</button>
