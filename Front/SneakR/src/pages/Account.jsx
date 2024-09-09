@@ -6,8 +6,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Textarea } from "@/components/ui/textarea"
 import getUserIdFromToken from '../tools/handleJWT'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 // Fonction pour formater la date au format MM/DD/YYYY
 const formatDateToMMDDYYYY = (date) => {
@@ -33,6 +39,8 @@ export default function ProfileSettings() {
     lastName: '',
     birthdate: '',
     email: '',
+    size: '',
+    favorite_category : '',
     password: '' // Ajout du mot de passe ici
   });
   const [error, setError] = useState('');
@@ -62,7 +70,9 @@ export default function ProfileSettings() {
             lastName: data.lastname,
             email: data.email,
             birthdate: data.birthdate ? formatDateToMMDDYYYY(data.birthdate) : '', // Formate la date en MM/DD/YYYY
-            password: '' // Le mot de passe est vide par défaut
+            password: '', // Le mot de passe est vide par défaut,
+            size: data.size,
+            favorite_category: data.favorite_category
           });
         } else {
           setError('Failed to fetch user data');
@@ -77,9 +87,14 @@ export default function ProfileSettings() {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-  };
+    const { name, value } = e.target
+    console.error(name, value)
+    setUser(prevUser => ({ ...prevUser, [name]: value }))
+  }
+
+  const handleSelectChange = (name) => (value) => {
+    setUser(prevUser => ({ ...prevUser, [name]: value }))
+  }
 
   const handleSave = async () => {
     setEditMode(false);
@@ -89,9 +104,9 @@ export default function ProfileSettings() {
     // Avant d'envoyer les données au backend, formate la date en YYYY-MM-DD
     const updatedUser = { 
       ...user, 
-      birthdate: formatDateToYYYYMMDD(user.birthdate) 
+      birthdate: formatDateToYYYYMMDD(user.birthdate)
     };
-
+    console.error(updatedUser)
     try {
       const response = await fetch(`${import.meta.env.VITE_APP_USERS_ROUTE}/${userId}`, {
         method: 'PUT',
@@ -117,18 +132,18 @@ export default function ProfileSettings() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-10">
-        <Card className="w-full">
+    <div className="min-h-screen bg-background flex items-center">
+      <div className="container py-10 pl-10">
+        <Card className="w-full border-[#c33035]">
           <CardHeader>
             <div className="flex items-center space-x-4">
-              <Avatar className="w-16 h-16">
+              <Avatar className="w-16 h-16 border-2 border-[#c33035]">
                 <AvatarImage src="/placeholder.svg?height=64&width=64" alt="User avatar" />
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>
               <div>
                 <CardTitle className="text-3xl">Personal Info</CardTitle>
-                <CardDescription className="text-lg">Update your personal details.</CardDescription>
+                <CardDescription className="text-lg text-[#c33035]">Update your personal details and sneaker preferences.</CardDescription>
               </div>
             </div>
           </CardHeader>
@@ -158,6 +173,18 @@ export default function ProfileSettings() {
                   />
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input 
+                    id="email" 
+                    name="email" 
+                    type="email"
+                    value={user.email} 
+                    onChange={handleChange} 
+                    placeholder="john.doe@example.com" 
+                    disabled={!editMode}
+                  />
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="birthdate">Birthdate</Label>
                   <Input 
                     id="birthdate" 
@@ -181,13 +208,44 @@ export default function ProfileSettings() {
                   />
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="bio">Bio</Label>
-                <Textarea id="bio" placeholder="Tell us about yourself" className="min-h-[100px]" disabled={!editMode} />
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-[#c33035]">Sneaker Preferences</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="shoeSize">Shoe Size</Label>
+                    <Input 
+                      id="shoeSize" 
+                      name="shoeSize" 
+                      value={user.size} 
+                      onChange={handleChange} 
+                      placeholder="Enter your shoe size" 
+                      disabled={!editMode}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="favoriteBrand">Favorite Brand</Label>
+                    <Select
+                      onValueChange={handleSelectChange('favoriteBrand')} 
+                      defaultValue={user.favorite_category}
+                      disabled={!editMode}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select favorite brand" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Nike">Nike</SelectItem>
+                        <SelectItem value="Adidas">Adidas</SelectItem>
+                        <SelectItem value="Jordan">Jordan</SelectItem>
+                        <SelectItem value="Yeezy">Yeezy</SelectItem>
+                        <SelectItem value="New Balance">New Balance</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-end space-x-4">
+          <CardFooter className="flex justify-center space-x-4">
             {editMode ? (
               <>
                 <Button variant="outline" onClick={() => setEditMode(false)}>Cancel</Button>
@@ -200,5 +258,5 @@ export default function ProfileSettings() {
         </Card>
       </div>
     </div>
-  );
+  )
 }
