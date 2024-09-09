@@ -31,7 +31,6 @@ CREATE TABLE `sneakers` (
   `publishedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
- 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) AUTO_INCREMENT,
@@ -47,7 +46,6 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
- 
 -- Optional: Lock tables for certain operations (usually not needed during schema setup)
 -- LOCK TABLES `sneakers` WRITE;
 -- UNLOCK TABLES;

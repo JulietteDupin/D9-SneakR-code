@@ -1,9 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js'
+
 
 export default function Payment() {
+  const location = useLocation();
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const { totalAmount } = location.state || { totalAmount: 0 };
 
 //   useEffect(() => {
 //     const isAuthenticated = localStorage.getItem('isAuthenticated');
@@ -25,8 +29,22 @@ const handlePayment = async (e) => {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': "*",
         },
-        body: JSON.stringify({ amount: 1000 })
+        body: JSON.stringify({ amount: totalAmount * 100})
       })
+
+      const data = await response.json();
+      
+      console.log("response", data.session_id);
+      const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+      const stripe = await stripePromise;
+      if (stripe) {
+        const result = await stripe.redirectToCheckout({
+          sessionId: data.session_id,
+        })
+        if (result.error) {
+          setError("Payment error", result.error)
+        }
+      }
       if (response.ok) {
         console.log('User created')
         navigate('/login');
