@@ -6,7 +6,7 @@ const app = express();
 
 // CORS Configuration
 app.use(cors({
-  origin: 'http://localhost:5173', // Replace with your frontend origin
+  origin: ['http://localhost:5173','http://172.17.0.2:5173'], // Replace with your frontend origin
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Ensure OPTIONS is included
   allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'], // Specify the headers expected in requests
   credentials: true, // If you're dealing with cookies, authorization headers, or TLS client certificates
