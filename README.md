@@ -3,12 +3,11 @@
 
 ## Description
 
-The purpose of this project is to discover the software platform that we chose through the creation of a business application.<br />
-To do this, we had to implement an E-Commerce website, `SneakR`. SneakR allows to discover and buy sneakers from an API bringing together several brands and models. The application offers an intuitive user interface, a back office for management, as well as a complete ordering system.
+The purpose of this project is to discover the software platform that we chose through the creation of a business application. To do this, we had to implement an E-Commerce website, `SneakR`. SneakR allows to discover and buy sneakers from an API bringing together several brands and models. The application offers an intuitive user interface, a back office for management, as well as a complete ordering system.
 <br />
 
 - `The website offers the following functionalities:`
-    * The user can register and login on the website by creating an account or using Google OAuth2 (user management, authentification)
+    * The user can register and login on the website by creating an account or using Google OAuth2.
     * Complete ordering process, including adding to cart and paying.
     * User preferences with management of shoe sizes and favorite brands.
 
