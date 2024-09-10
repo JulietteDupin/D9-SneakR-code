@@ -15,30 +15,21 @@ router.post('/create-payment-intent', async (req, res) => {
   console.log("create payment intent")
   console.log("req", req);
   console.log("body", req.body);
-  const { email, line_items } = req.body; // Amount should be in the smallest currency unit (e.g., cents for USD)
+  const { email, line_items } = req.body;
 
   try {
     const customer = await db.query("SELECT * FROM users WHERE email = ?", [email])
 
-    console.log(">line_items", line_items.map(select_stripe_props));
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       customer: customer.stripe_customer_id, // ex : "cus_QnBExMh9cwI5oM",
       line_items: line_items.map(select_stripe_props),
-      // line_items : [
-      //   {
-      //     price: req.body.price_id, // Identifiant du prix dans Stripe
-      //     quantity: req.body.quantity, // Quantité d'articles
-      //   },
-      // ],
-      mode: 'payment', // Changement du mode à 'payment' pour un paiement unique
-      success_url: `${process.env.VITE_APP_CLIENT_URL}/payment/success`, // URL de succès après paiement
-      cancel_url: `${process.env.VITE_APP_CLIENT_URL}/payment/cancel`, // URL d'annulation après paiement
+      mode: 'payment',
+      success_url: `${process.env.VITE_APP_CLIENT_URL}/payment/success`, // URL for payment success
+      cancel_url: `${process.env.VITE_APP_CLIENT_URL}/payment/cancel`, // URL for payment error
     });
 
-    console.log("payment response", session);
-    console.log("payment session id", session.id);
     res.json({session_id: session.id});
   } catch (error) {
     res.status(500).send({ error: error.message });
@@ -53,7 +44,6 @@ router.post('/payment-success/:user_id', async (req, res) => {
     const user_data = await db.query("SELECT * FROM users WHERE id = ?", [user_id]);
     const cartItems = JSON.parse(user_data[0][0].cart);
 
-    // Using forEach instead of map to handle async operations correctly
     for (const cart_item of cartItems) {
       const item_selected = await db.query("SELECT * FROM sneakers WHERE name = ?", [cart_item.name]);
       

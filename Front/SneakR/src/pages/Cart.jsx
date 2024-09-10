@@ -34,11 +34,8 @@ const Cart = () => {
     setSelectedSneaker(sneaker);
   };
 
-  // Placeholder function for handling payment
   const handlePayment = async () => {
-    console.log("handlepayment");
 
-    // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
     try {
       let response = await fetch(import.meta.env.VITE_APP_PAYMENT_ROUTE + '/create-payment-intent', {
         method: 'POST',
