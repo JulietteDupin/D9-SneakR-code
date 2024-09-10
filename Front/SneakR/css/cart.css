@@ -46,6 +46,10 @@
   .payment-button:hover {
     background-color: #27ae60;
   }
+
+  .payment-button:disabled {
+    background-color: #696969;
+  }
   
   /* Remove from Cart Button */
   .remove-from-cart {
