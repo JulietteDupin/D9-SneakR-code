@@ -144,7 +144,6 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Cart management
-
 router.put('/cart/:id', async (req, res) => {
   const { id } = req.params;
   const { cart } = req.body;
