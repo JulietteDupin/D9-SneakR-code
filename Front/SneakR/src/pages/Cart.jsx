@@ -4,6 +4,7 @@ import "../../css/sneaker.css";
 import "../../css/cart.css";
 import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js'
+import Navbar from '../tools/Navbar';
 
 const Cart = () => {
   const navigate = useNavigate()
@@ -13,7 +14,7 @@ const Cart = () => {
   useEffect(() => {
       try {
         cartItems.forEach(async (sneaker) =>  {
-          const response = await fetch(import.meta.env.VITE_APP_PRODUCTS_ROUTE + sneaker.id, {
+          const response = await fetch(import.meta.env.VITE_APP_PRODUCTS_ROUTE + "/" + sneaker.id, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -74,6 +75,7 @@ const Cart = () => {
 
   return (
     <div className="cart-page">
+      <Navbar />
       <h2 className="cart-title">Shopping Cart</h2>
       {cartItems.length === 0 ? (
         <p className="empty-cart-message">Your cart is empty.</p>
@@ -96,6 +98,7 @@ const Cart = () => {
                   <p className="sneaker-price">Price: ${parseInt(sneaker.price).toFixed(2)}</p>
                   <p>Size: {parseInt(sneaker.size)}</p>
                   <p className="sneaker-quantity">Quantity: {sneaker.quantity}</p>
+                  {sneaker.stock[sneaker.size].stock < sneaker.quantity ? <p style={{ color: 'red' }}>Stock insuffisant</p> : ""}
                   <button
                     onClick={() => removeFromCart(sneaker)}
                     className="remove-from-cart"
@@ -111,7 +114,7 @@ const Cart = () => {
             <p className="total-amount">Total: ${parseInt(totalAmount).toFixed(2)}</p>
             <div className="cart-buttons">
               <button onClick={clearCart} className="clear-cart">Clear Cart</button>
-              <button onClick={handlePayment} className="payment-button">Proceed to Payment</button>
+              <button disabled={cartItems.some(item => item.stock[item.size].stock < item.quantity)} onClick={handlePayment} className="payment-button">Proceed to Payment</button>
             </div>
           </div>
         </div>

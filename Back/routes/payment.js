@@ -37,7 +37,6 @@ router.post('/create-payment-intent', async (req, res) => {
       cancel_url: `${process.env.VITE_APP_CLIENT_URL}/payment/cancel`, // URL d'annulation après paiement
     });
 
-
     console.log("payment response", session);
     console.log("payment session id", session.id);
     res.json({session_id: session.id});
@@ -45,5 +44,40 @@ router.post('/create-payment-intent', async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 });
+
+
+router.post('/payment-success/:user_id', async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    const user_data = await db.query("SELECT * FROM users WHERE id = ?", [user_id]);
+    const cartItems = JSON.parse(user_data[0][0].cart);
+
+    // Using forEach instead of map to handle async operations correctly
+    for (const cart_item of cartItems) {
+      const item_selected = await db.query("SELECT * FROM sneakers WHERE name = ?", [cart_item.name]);
+      
+      if (item_selected.length > 0) {
+        const stock = JSON.parse(item_selected[0][0].stock);
+
+        // Ensure stock values are integers before performing arithmetic
+        if (stock[cart_item.size] && stock[cart_item.size].stock) {
+          stock[cart_item.size].stock = parseInt(stock[cart_item.size].stock) - parseInt(cart_item.quantity);
+        }
+        
+        console.log("update stock", stock);
+        await db.query("UPDATE sneakers SET stock = ? WHERE name = ?", [JSON.stringify(stock), cart_item.name]);
+      }
+    }
+
+    // Clear user's cart after processing payment
+    await db.query("UPDATE users SET cart = '{}' WHERE id = ?", [user_id]);
+    res.status(200).send({ message: "Stock updated and cart cleared successfully." });
+
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
 
 module.exports = router;
