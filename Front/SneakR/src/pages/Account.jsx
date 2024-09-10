@@ -53,6 +53,32 @@ export default function ProfileSettings() {
   const [editMode, setEditMode] = useState(false);
   const [passwordUpdated, setPasswordUpdated] = useState(false);
   const [error, setError] = useState("");
+  const [brands, setBrands] = useState([]);
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_APP_BRANDS_ROUTE}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch brands");
+        }
+
+        const brandsData = await response.json();
+        setBrands(brandsData);
+      } catch (error) {
+        console.error("Error fetching brands:", error);
+      }
+    };
+
+    fetchBrands();
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -103,12 +129,11 @@ export default function ProfileSettings() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.error(name, value);
     setUser((prevUser) => ({ ...prevUser, [name]: value }));
   };
 
-  const handleSelectChange = (name) => (value) => {
-    setUser((prevUser) => ({ ...prevUser, [name]: value }));
+  const handleSelectChange = (value) => {
+    setUser((prevUser) => ({ ...prevUser, favoriteCategory: value }));
   };
 
   const handleSave = async () => {
@@ -120,7 +145,7 @@ export default function ProfileSettings() {
       ...user,
       birthdate: formatDateToYYYYMMDD(user.birthdate),
     };
-    console.error(updatedUser);
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_APP_USERS_ROUTE}/${userId}`,
@@ -138,7 +163,6 @@ export default function ProfileSettings() {
 
       if (response.ok) {
         setPasswordUpdated(true);
-        console.log("Informations updated");
       } else {
         setError("Failed to update user data");
       }
@@ -250,18 +274,22 @@ export default function ProfileSettings() {
                     <Label htmlFor="favoriteBrand">Favorite Brand</Label>
                     <Select
                       value={user.favoriteCategory}
-                      onValueChange={handleSelectChange("favoriteCategory")}
+                      onValueChange={handleSelectChange}
                       disabled={!editMode}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select favorite brand" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Nike">Nike</SelectItem>
-                        <SelectItem value="Adidas">Adidas</SelectItem>
-                        <SelectItem value="Jordan">Jordan</SelectItem>
-                        <SelectItem value="Yeezy">Yeezy</SelectItem>
-                        <SelectItem value="New Balance">New Balance</SelectItem>
+                        {brands.length > 0 ? (
+                          brands.map((brand, index) => (
+                            <SelectItem key={index} value={brand.brand}>
+                              {brand.brand}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem disabled>No brands available</SelectItem>
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
