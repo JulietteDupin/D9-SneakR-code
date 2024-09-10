@@ -72,13 +72,12 @@ const ProductOptions = ({ color, size, price }) => {
 
 
 const ProductActions = ({ addToCart, product }) => {
-  console.log("product", product);
   const [buttonSizes, setButtonSizes] = useState([]);
 
   const item = {
     id: product.id,
     name: product.name,
-    price: product.estimatedMarketValue,
+    price: product.retailPrice,
     stripe_price_id: product.stripe_price_id,
     image: JSON.parse(product.image).small,
     stock: JSON.parse(product.stock),
@@ -87,8 +86,8 @@ const ProductActions = ({ addToCart, product }) => {
   };
 
   const handleAddToCart= (size) => {
-    item.size = size;
-    addToCart(item);
+    const updatedItem = { ...item, size };
+    addToCart(updatedItem);
   }
 
   useEffect(() => {
@@ -104,7 +103,7 @@ const ProductActions = ({ addToCart, product }) => {
     ));
     setButtonSizes(buttonList);
     }
-  }, [item])
+  })
 
   return (
     <div>

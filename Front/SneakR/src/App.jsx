@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductPage from './pages/ProductPage';
 import Payment from './pages/Payment';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentCancel from './pages/PaymentCancel';
 import CategoryPage from './pages/CategoryPage';
 import PrivateRoute from './tools/PrivateRoute';
 import PublicRoute from './tools/PublicRoute';
@@ -53,10 +55,22 @@ export default function App() {
             </PrivateRoute >
           } />
 
+          {/* payment routes */}
           <Route path="/payment" element={<PrivateRoute>
             <Payment />
           </PrivateRoute>
           } />
+
+          <Route path="/payment/success" element={<PrivateRoute>
+            <PaymentSuccess />
+          </PrivateRoute>
+          } />
+
+          <Route path="/payment/cancel" element={<PrivateRoute>
+            <PaymentCancel />
+          </PrivateRoute>
+          } />
+
 
           {/* public routes */}
           <Route path="/login" element={
