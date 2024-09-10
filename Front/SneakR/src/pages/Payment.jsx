@@ -9,18 +9,10 @@ export default function Payment() {
   const [error, setError] = useState('');
   const { totalAmount } = location.state || { totalAmount: 0 };
 
-//   useEffect(() => {
-//     const isAuthenticated = localStorage.getItem('isAuthenticated');
-//     if (!isAuthenticated) {
-//       navigate('/login');
-//     }
-//   }, [navigate]);
-
 const handlePayment = async (e) => {
     e.preventDefault();
     console.log("handlepayment");
 
-    // Simulate storing the user's credentials in localStorage, to take down once we have the backend working
     try {
 
       let response = await fetch(import.meta.env.VITE_APP_PAYMENT_ROUTE + '/create-payment-intent', {

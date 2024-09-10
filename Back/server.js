@@ -13,10 +13,8 @@ app.use(cors({
   credentials: true,
 }));
 
-// Middleware to handle preflight requests
 app.options('*', cors()); 
 
-// Middleware for parsing JSON
 app.use(express.json());
 
 // Routes
