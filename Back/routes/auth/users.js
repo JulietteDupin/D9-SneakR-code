@@ -143,4 +143,26 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Cart management
+
+router.put('/cart/:id', async (req, res) => {
+  const { id } = req.params;
+  const { cart } = req.body;
+
+  console.log("update cart", cart);
+  try {
+    const [result] = await db.query(
+      'UPDATE users SET cart = ? WHERE id = ?',
+      [JSON.stringify(cart), id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ message: 'User updated' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+
 module.exports = router;
