@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import "../../css/sneaker.css";
 import Navbar from '../tools/Navbar';
 import { useCart } from '../context/CartContext';
@@ -72,21 +72,47 @@ const ProductOptions = ({ color, size, price }) => {
 
 
 const ProductActions = ({ addToCart, product }) => {
-  
+  const [buttonSizes, setButtonSizes] = useState([]);
+
   const item = {
     id: product.id,
     name: product.name,
-    price: product.estimatedMarketValue,
+    price: product.retailPrice,
     stripe_price_id: product.stripe_price_id,
     image: JSON.parse(product.image).small,
+    stock: JSON.parse(product.stock),
+    gender: product.gender,
+    size: 0
   };
 
-  return (
-    <div className="product-actions">
-      <button onClick={() => addToCart(item)} className="add-to-cart">
-        Add to Cart
+  const handleAddToCart= (size) => {
+    const updatedItem = { ...item, size };
+    addToCart(updatedItem);
+  }
+
+  useEffect(() => {
+    if (item && item.stock) {
+    const buttonList = Object.entries(item.stock).map(([size, stockValue]) => (
+      <button
+        key={size}
+        onClick={() => {handleAddToCart(size)}}
+        className="add-to-cart"
+      >
+        {`${item.gender} Size ${size} - Stock: ${stockValue.stock}`}
       </button>
-      <button className="add-to-wishlist">Add to wishlist</button>
+    ));
+    setButtonSizes(buttonList);
+    }
+  })
+
+  return (
+    <div>
+      <div className="product-actions">
+        {buttonSizes}
+      </div>
+      <div className="product-actions">
+        <button className="add-to-wishlist">Add to wishlist</button>
+      </div>
     </div>
   );
 };
