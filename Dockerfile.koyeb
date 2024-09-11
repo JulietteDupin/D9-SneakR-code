@@ -27,7 +27,7 @@ FROM node:20 AS frontend-build
 WORKDIR /app/frontend
 COPY Front/SneakR/ .
 
-# Install dependencies and build the frontend application
+# Install dependencies
 RUN npm install
 
 # Expose the frontend port
@@ -39,8 +39,8 @@ FROM ubuntu:20.04
 # Install necessary tools
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    mysql-server \
     curl \
-    # Install other necessary packages for running your application
     && rm -rf /var/lib/apt/lists/*
 
 # Copy MySQL setup from the mysql stage
