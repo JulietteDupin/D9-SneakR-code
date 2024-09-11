@@ -92,13 +92,13 @@ const ProductActions = ({ addToCart, product }) => {
 
   useEffect(() => {
     if (item && item.stock) {
-    const buttonList = Object.entries(item.stock).map(([size, stockValue]) => (
+    const buttonList = Object.entries(item.stock).map(([size]) => (
       <button
         key={size}
         onClick={() => {handleAddToCart(size)}}
         className="add-to-cart"
       >
-        {`${item.gender} Size ${size} - Stock: ${stockValue.stock}`}
+        {`${size}`}
       </button>
     ));
     setButtonSizes(buttonList);
