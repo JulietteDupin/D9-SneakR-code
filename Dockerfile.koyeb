@@ -27,10 +27,14 @@ COPY Back/dump.sql /docker-entrypoint-initdb.d/dump.sql
 # Stage 4: Combine all components into a single image
 FROM ubuntu:20.04
 
-# Install necessary packages and configure MySQL
+# Install necessary packages and MySQL
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server curl && \
     rm -rf /var/lib/apt/lists/*
+
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
 
 # Copy MySQL setup from the mysql-build stage
 COPY --from=mysql-build /docker-entrypoint-initdb.d/dump.sql /docker-entrypoint-initdb.d/dump.sql

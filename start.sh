@@ -1,13 +1,14 @@
 #!/bin/bash
 
-# Start MySQL
+# Start MySQL server
 service mysql start
 
-# Wait for MySQL to start
-sleep 10s
+# Wait for MySQL to be fully started
+sleep 20s
 
-# Initialize MySQL database
-mysql < /docker-entrypoint-initdb.d/dump.sql
+# Initialize the MySQL database
+mysql -e "CREATE DATABASE IF NOT EXISTS SneakR;"
+mysql SneakR < /docker-entrypoint-initdb.d/dump.sql
 
 # Start the backend service
 nohup node /app/backend/index.js &
