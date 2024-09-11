@@ -1,24 +1,19 @@
 #!/bin/bash
 
-# Start MySQL service
+# Start MySQL
 service mysql start
 
-# Wait for MySQL to fully start
-sleep 10
+# Wait for MySQL to start
+sleep 10s
 
-# Initialize the database with the dump file if it exists
-echo "Initializing the MySQL database..."
-mysql -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /docker-entrypoint-initdb.d/dump.sql
+# Initialize MySQL database
+mysql < /docker-entrypoint-initdb.d/dump.sql
 
 # Start the backend service
-echo "Starting the backend service..."
-cd /app/backend
-nohup npm start &
+nohup node /app/backend/index.js &
 
 # Start the frontend service
-echo "Starting the frontend service..."
-cd /app/frontend
-nohup npm run dev &
+nohup npm --prefix /app/frontend run dev &
 
-# Prevent the container from exiting
+# Keep the container running
 tail -f /dev/null

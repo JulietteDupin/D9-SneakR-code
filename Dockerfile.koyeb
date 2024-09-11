@@ -1,56 +1,45 @@
-# Stage 1: MySQL setup
-FROM mysql:8.0 AS mysql
-
-# Copy the SQL dump into the container
-COPY ./Back/dump.sql /docker-entrypoint-initdb.d/dump.sql
-
-# Expose the MySQL port
-EXPOSE 3306
-
-# Stage 2: Backend setup
-FROM node:20 AS backend-build
-
-# Set the working directory and copy backend source code
-WORKDIR /app/backend
-COPY Back/ .
-
-# Install production dependencies
-RUN npm install --production
-
-# Expose the backend port
-EXPOSE 5000
-
-# Stage 3: Frontend setup
+# Stage 1: Build the frontend application
 FROM node:20 AS frontend-build
 
-# Set the working directory and copy frontend source code
 WORKDIR /app/frontend
+
+# Copy frontend application code and dependencies
+COPY Front/SneakR/package*.json ./
+RUN npm install
 COPY Front/SneakR/ .
 
-# Install dependencies
-RUN npm install
+# Stage 2: Build the backend application
+FROM node:20 AS backend-build
 
-# Expose the frontend port
-EXPOSE 5173
+WORKDIR /app/backend
 
-# Final stage: Combine everything and prepare the environment
+# Copy backend application code and dependencies
+COPY Back/package*.json ./
+RUN npm install --production
+COPY Back/ .
+
+# Stage 3: Set up MySQL database
+FROM mysql:8.0 AS mysql-build
+
+# Copy the SQL dump file for database initialization
+COPY Back/dump.sql /docker-entrypoint-initdb.d/dump.sql
+
+# Stage 4: Combine all components into a single image
 FROM ubuntu:20.04
 
-# Install necessary tools
+# Install necessary packages and configure MySQL
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    mysql-server \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+    DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server curl && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy MySQL setup from the mysql stage
-COPY --from=mysql /docker-entrypoint-initdb.d/dump.sql /docker-entrypoint-initdb.d/dump.sql
-
-# Copy backend build from the backend-build stage
-COPY --from=backend-build /app/backend /app/backend
+# Copy MySQL setup from the mysql-build stage
+COPY --from=mysql-build /docker-entrypoint-initdb.d/dump.sql /docker-entrypoint-initdb.d/dump.sql
 
 # Copy frontend build from the frontend-build stage
 COPY --from=frontend-build /app/frontend /app/frontend
+
+# Copy backend build from the backend-build stage
+COPY --from=backend-build /app/backend /app/backend
 
 # Copy the startup script and make it executable
 COPY start.sh /start.sh
