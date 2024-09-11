@@ -12,7 +12,8 @@ services:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./Back/dump.sql:/docker-entrypoint-initdb.d/dump.sql  # Montre le fichier dump.sql
+      - ./Back/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./Back/reset.sql:/docker-entrypoint-initdb.d/reset.sql
     networks:
       - my_network
 

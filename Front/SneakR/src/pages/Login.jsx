@@ -134,7 +134,7 @@ export default function Login() {
           </form>
           
           <div className="text-sm text-center space-y-2">
-            <a href="#" className="text-[#c33035] hover:underline">Forgot password?</a>
+            <a href="reset-password" className="text-[#c33035] hover:underline">Forgot password?</a>
             <p>Don't have an account? <Link to="/register" className="text-[#c33035] hover:underline">Register here</Link></p>
           </div>
 
@@ -154,7 +154,7 @@ export default function Login() {
                 onError={handleGoogleFailure}
                 text="signin_with"
                 shape="rectangular"
-                theme="filled_blue"
+                theme="outline"
                 size="large"
                 width="300"
               />
