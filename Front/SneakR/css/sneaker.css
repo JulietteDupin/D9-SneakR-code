@@ -134,6 +134,13 @@ SNEAKERS.CSS .product-page {
 .add-to-cart {
   background-color: #000;
   color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.add-to-cart:hover
+{
+  transform: translate(0, -5px);
+
 }
 
 .add-to-wishlist {
