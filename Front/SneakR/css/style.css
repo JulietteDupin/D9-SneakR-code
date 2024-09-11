@@ -7,3 +7,7 @@ root {
   display: flex;
   width: 100%;
 }
+
+.content {
+  padding-top: 70px;
+}
