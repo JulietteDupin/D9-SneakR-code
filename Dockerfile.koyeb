@@ -8,6 +8,9 @@ COPY Front/SneakR/package*.json ./
 RUN npm install
 COPY Front/SneakR/ .
 
+EXPOSE 5173
+CMD ["npm", "run", "dev"]
+
 # Stage 2: Build the backend application
 FROM node:20 AS backend-build
 
@@ -17,6 +20,9 @@ WORKDIR /app/backend
 COPY Back/package*.json ./
 RUN npm install --production
 COPY Back/ .
+
+EXPOSE 5000
+CMD ["node", "server.js"]
 
 # Stage 3: Set up MySQL database
 FROM mysql:8.0 AS mysql-build

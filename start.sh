@@ -11,7 +11,7 @@ mysql -e "CREATE DATABASE IF NOT EXISTS SneakR;"
 mysql SneakR < /docker-entrypoint-initdb.d/dump.sql
 
 # Start the backend service
-nohup node /app/backend/index.js &
+nohup node /app/backend/server.js &
 
 # Start the frontend service
 nohup npm --prefix /app/frontend run dev &
