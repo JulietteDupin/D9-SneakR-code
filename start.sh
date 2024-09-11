@@ -7,10 +7,8 @@ service mysql start
 sleep 10
 
 # Initialize the database with the dump file if it exists
-if [ -f /docker-entrypoint-initdb.d/dump.sql ]; then
-    echo "Initializing the MySQL database..."
-    mysql -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /docker-entrypoint-initdb.d/dump.sql
-fi
+echo "Initializing the MySQL database..."
+mysql -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /docker-entrypoint-initdb.d/dump.sql
 
 # Start the backend service
 echo "Starting the backend service..."
