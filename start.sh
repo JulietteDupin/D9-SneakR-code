@@ -12,12 +12,12 @@ if [ -f /docker-entrypoint-initdb.d/dump.sql ]; then
     mysql -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /docker-entrypoint-initdb.d/dump.sql
 fi
 
-# Start the backend service in the background
+# Start the backend service
 echo "Starting the backend service..."
 cd /app/backend
 nohup npm start &
 
-# Start the frontend service in the background
+# Start the frontend service
 echo "Starting the frontend service..."
 cd /app/frontend
 nohup npm run dev &

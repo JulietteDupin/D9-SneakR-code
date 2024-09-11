@@ -1,4 +1,4 @@
-# Stage 1: MySQL setup using your existing DB Dockerfile setup
+# Stage 1: MySQL setup
 FROM mysql:8.0 AS mysql
 
 # Copy the SQL dump into the container
@@ -7,7 +7,7 @@ COPY ./Back/dump.sql /docker-entrypoint-initdb.d/dump.sql
 # Expose the MySQL port
 EXPOSE 3306
 
-# Stage 2: Backend setup using your backend Dockerfile instructions
+# Stage 2: Backend setup
 FROM node:20 AS backend-build
 
 # Set the working directory and copy backend source code
@@ -20,7 +20,7 @@ RUN npm install --production
 # Expose the backend port
 EXPOSE 5000
 
-# Stage 3: Frontend setup using your frontend Dockerfile instructions
+# Stage 3: Frontend setup
 FROM node:20 AS frontend-build
 
 # Set the working directory and copy frontend source code
@@ -33,21 +33,23 @@ RUN npm install
 # Expose the frontend port
 EXPOSE 5173
 
-# Final stage: Combine everything and launch the services
+# Final stage: Combine everything and prepare the environment
 FROM ubuntu:20.04
 
-# Install necessary tools with retry mechanism and non-interactive tzdata configuration
+# Install necessary tools
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server curl && \
-    rm -rf /var/lib/apt/lists/*
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    curl \
+    # Install other necessary packages for running your application
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy MySQL setup from the first stage
+# Copy MySQL setup from the mysql stage
 COPY --from=mysql /docker-entrypoint-initdb.d/dump.sql /docker-entrypoint-initdb.d/dump.sql
 
-# Copy backend build from the second stage
+# Copy backend build from the backend-build stage
 COPY --from=backend-build /app/backend /app/backend
 
-# Copy frontend build from the third stage
+# Copy frontend build from the frontend-build stage
 COPY --from=frontend-build /app/frontend /app/frontend
 
 # Copy the startup script and make it executable
