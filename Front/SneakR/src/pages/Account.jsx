@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Navbar from '../tools/Navbar';
 
 // Fonction pour formater la date au format MM/DD/YYYY
 const formatDateToMMDDYYYY = (date) => {
@@ -174,6 +175,7 @@ export default function ProfileSettings() {
 
   return (
     <div className="min-h-screen bg-background flex items-center">
+      <Navbar/>
       <div className="container py-10 pl-10">
         <Card className="w-full border-[#c33035]">
           <CardHeader>
