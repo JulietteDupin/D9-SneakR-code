@@ -85,7 +85,6 @@ export function CartProvider({ children }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
   useEffect(() => {
-    console.log("cart items", state.cartItems);
     updateCart(state.cartItems);
   }, [state])
 
