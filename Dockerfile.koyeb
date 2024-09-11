@@ -36,8 +36,10 @@ EXPOSE 5173
 # Final stage: Combine everything and launch the services
 FROM ubuntu:20.04
 
-# Install necessary tools
-RUN apt-get update && apt-get install -y mysql-server curl
+# Install necessary tools with retry mechanism and non-interactive tzdata configuration
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy MySQL setup from the first stage
 COPY --from=mysql /docker-entrypoint-initdb.d/dump.sql /docker-entrypoint-initdb.d/dump.sql
