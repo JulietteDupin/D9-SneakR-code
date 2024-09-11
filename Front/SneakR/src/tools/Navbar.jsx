@@ -20,7 +20,7 @@ const Navbar = () => {
                 <li><Link to="/products/category/women">Women</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
                 <li><Link to="/account">My Account</Link></li>
-                <li><Link to="/cart"><Button><AiOutlineShoppingCart />Cart</Button></Link></li>
+                <li><Link to="/cart">Cart</Link></li>
             </ul>
             <div className="menu-toggle" onClick={toggleMenu}>
                 <span></span>
