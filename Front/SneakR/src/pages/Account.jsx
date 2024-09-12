@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useNavigate } from 'react-router-dom';
+
 import {
   Card,
   CardContent,
@@ -55,6 +57,13 @@ export default function ProfileSettings() {
   const [passwordUpdated, setPasswordUpdated] = useState(false);
   const [error, setError] = useState("");
   const [brands, setBrands] = useState([]);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   useEffect(() => {
     const fetchBrands = async () => {
@@ -175,7 +184,7 @@ export default function ProfileSettings() {
 
   return (
     <div className="min-h-screen bg-background flex items-center">
-      <Navbar/>
+      <Navbar />
       <div className="container py-10 pl-10">
         <Card className="w-full border-[#c33035]">
           <CardHeader>
@@ -310,6 +319,7 @@ export default function ProfileSettings() {
             ) : (
               <Button onClick={() => setEditMode(true)}>Edit Profile</Button>
             )}
+            <Button onClick={handleLogout}>Logout</Button>
           </CardFooter>
         </Card>
       </div>
