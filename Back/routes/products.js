@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
+// Get all sneaker brands
+router.get('/brands', async (req, res) => {
+  try {
+    const [brands] = await db.query('SELECT DISTINCT brand FROM sneakers');
+    res.json(brands);
+  } catch (err) {
+    console.error('Erreur lors de la récupération des marques:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -23,17 +34,6 @@ router.get('/', async (req, res) => {
     console.error('Erreur lors de la récupération des marques:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
 
-  }
-});
-
-// Get all sneaker brands
-router.get('/brands', async (req, res) => {
-  try {
-    const [brands] = await db.query('SELECT DISTINCT brand FROM sneakers');
-    res.json(brands);
-  } catch (err) {
-    console.error('Erreur lors de la récupération des marques:', err);
-    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
