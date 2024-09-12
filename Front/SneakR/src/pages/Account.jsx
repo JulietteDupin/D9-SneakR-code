@@ -23,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useNavigate } from "react-router-dom"
 import { formatDateToMMDDYYYY, formatDateToYYYYMMDD } from "../lib/utils"
 
 export default function ProfileSettings() {

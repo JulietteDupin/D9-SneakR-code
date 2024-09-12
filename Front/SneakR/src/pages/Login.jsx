@@ -40,20 +40,15 @@ export default function Login() {
       if (response.ok) {
         localStorage.setItem('token', data.token);
 
-<<<<<<< HEAD
         setMessage('Login successful');
         setAlertType('success');
         setShouldNavigate(true);
-=======
         alert('Login successful');
 
         if (data.isAdmin == 0) {
-          navigate('/products');
-        } else {
           localStorage.setItem('admin', true);
           navigate('/admin/home');
         }
->>>>>>> admin
       } else {
         setMessage('Credentials are invalid');
         setAlertType('error');
@@ -88,17 +83,17 @@ export default function Login() {
               <img className="h-20 w-30 mt-5" src={logo} alt="Logo" />
             </div>
           </div>
-          
+
           {message && (
             <Alert
               variant={alertType === 'success' ? 'success' : 'destructive'}
               style={{
                 position: 'fixed',
-                bottom: '20px',  
-                right: '20px',   
-                zIndex: 1000,    
+                bottom: '20px',
+                right: '20px',
+                zIndex: 1000,
                 width: '300px',
-                backgroundColor: '#fff', 
+                backgroundColor: '#fff',
               }}
             >
               {alertType === 'success' ? (
@@ -143,7 +138,7 @@ export default function Login() {
               Log In
             </Button>
           </form>
-          
+
           <div className="text-sm text-center space-y-2">
             <a href="reset-password" className="text-[#c33035] hover:underline">Forgot password?</a>
             <p>Don't have an account? <Link to="/register" className="text-[#c33035] hover:underline">Register here</Link></p>
@@ -157,7 +152,7 @@ export default function Login() {
               <span className="bg-white px-2 text-gray-500">Or continue with</span>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             <div className='flex items-center justify-center'>
               <GoogleLogin
