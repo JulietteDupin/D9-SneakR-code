@@ -62,8 +62,8 @@ router.post('/', async (req, res) => {
     });
 
     const [result] = await db.query(
-      'INSERT INTO users (firstName, lastName, email, password, stripe_customer_id) VALUES (?, ?, ?, ?, ?)',
-      [firstName, lastName, email, hashedPassword, customer.id]
+      'INSERT INTO users (firstName, lastName, email, password, stripe_customer_id, isAdmin) VALUES (?, ?, ?, ?, ?, ?)',
+      [firstName, lastName, email, hashedPassword, customer.id, 1]
     );
 
     res.status(201).json({ id: result.insertId, firstName, lastName, email });
@@ -72,7 +72,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update user infos or preferences by user ID
+// Update a user by ID
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { firstName, lastName, birthdate, email, password, size, favoriteCategory } = req.body;

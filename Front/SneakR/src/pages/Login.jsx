@@ -40,9 +40,20 @@ export default function Login() {
       if (response.ok) {
         localStorage.setItem('token', data.token);
 
+<<<<<<< HEAD
         setMessage('Login successful');
         setAlertType('success');
         setShouldNavigate(true);
+=======
+        alert('Login successful');
+
+        if (data.isAdmin == 0) {
+          navigate('/products');
+        } else {
+          localStorage.setItem('admin', true);
+          navigate('/admin/home');
+        }
+>>>>>>> admin
       } else {
         setMessage('Credentials are invalid');
         setAlertType('error');

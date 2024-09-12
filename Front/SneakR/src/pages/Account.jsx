@@ -22,26 +22,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import Navbar from '../tools/Navbar';
-
-// Fonction pour formater la date au format MM/DD/YYYY
-const formatDateToMMDDYYYY = (date) => {
-  const d = new Date(date);
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  const year = d.getFullYear();
-  return `${month}/${day}/${year}`;
-};
-
-// Fonction pour formater la date au format YYYY-MM-DD (pour l'envoi au backend)
-const formatDateToYYYYMMDD = (date) => {
-  const d = new Date(date);
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  const year = d.getFullYear();
-  return `${year}-${month}-${day}`;
-};
+} from "@/components/ui/select"
+import { useNavigate } from "react-router-dom"
+import { formatDateToMMDDYYYY, formatDateToYYYYMMDD } from "../lib/utils"
 
 export default function ProfileSettings() {
   const [user, setUser] = useState({
@@ -94,8 +77,8 @@ export default function ProfileSettings() {
     const fetchUserData = async () => {
       const userId = getUserIdFromToken();
       if (!userId) {
-        setError("User not found. Please login again.");
-        Navigate("/login");
+        setError('User not found. Please login again.');
+        navigate("/login");
         return;
       }
 
@@ -155,7 +138,6 @@ export default function ProfileSettings() {
       ...user,
       birthdate: formatDateToYYYYMMDD(user.birthdate),
     };
-
     try {
       const response = await fetch(
         `${import.meta.env.VITE_APP_USERS_ROUTE}/${userId}`,
