@@ -1,20 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from '../tools/Navbar';
-import SneakerList from '../tools/SneakerList';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 
-import "../../css/style.css";
-
-export default function PaymentCancel({ setSelectedSneaker }) {
+export default function PaymentCancel() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,9 +13,15 @@ export default function PaymentCancel({ setSelectedSneaker }) {
   }, [navigate]);
 
   return (
-    <div className='frame'>
-        <h1>Payment error</h1>
-        <button onClick="window.location.href='/products'">Return to product list</button>
+    <div style={{ textAlign: 'center', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <Navbar />
+      <h1 style={{ marginTop: '20px' }}>Payment Cancel</h1>
+      <button 
+        onClick={() => navigate('/products')} 
+        style={{ marginTop: '20px', padding: '10px', fontSize: '16px', backgroundColor: "#c33035", borderRadius: "25px" }}
+      >
+        Return to Product List
+      </button>
     </div>
   );
 }
