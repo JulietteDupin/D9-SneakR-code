@@ -11,7 +11,6 @@ router.post('/', (req, res) => {
 
     db.query('SELECT * FROM users WHERE email = ?', [email])
         .then(result => {
-
             if (result.length > 0) {
                 const user = result[0][0];
                 
@@ -22,7 +21,7 @@ router.post('/', (req, res) => {
 
                             res.status(200).json({
                                 token,
-                                user: { id: user.id, email: user.email }
+                                user: { id: user.id, email: user.email, isAdmin: user.isAdmin }
                             });
                         } else {
                             res.status(401).json({ message: 'Invalid email/password combination' });
