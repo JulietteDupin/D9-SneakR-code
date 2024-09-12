@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from '../context/CartContext';
+import Navbar from '../tools/Navbar';
 
 import "../../css/style.css";
 import { jwtDecode } from "jwt-decode";
@@ -36,9 +37,15 @@ export default function PaymentSuccess({ setSelectedSneaker }) {
   }, [navigate]);
 
   return (
-    <div className='frame'>
-        <h1>Payment success</h1>
-        <button onClick="window.location.href='/products'">Return to product list</button>
+    <div style={{ textAlign: 'center', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <Navbar />
+      <h1 style={{ marginTop: '20px' }}>Payment Success</h1>
+      <button 
+        onClick={() => navigate('/products')} 
+        style={{ marginTop: '20px', padding: '10px', fontSize: '16px', backgroundColor: "#c33035", borderRadius: "25px" }}
+      >
+        Return to Product List
+      </button>
     </div>
   );
 }
