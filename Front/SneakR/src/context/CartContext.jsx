@@ -20,7 +20,6 @@ async function updateCart(cartItems) {
         body: JSON.stringify({ "cart": cartItems })
       })
       if (response.ok) {
-        console.log('Cart updated')
       } else {
         console.error(response)
       }

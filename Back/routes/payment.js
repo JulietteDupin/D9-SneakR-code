@@ -12,9 +12,6 @@ function select_stripe_props(line_items) {
 }
 
 router.post('/create-payment-intent', async (req, res) => {
-  console.log("create payment intent")
-  console.log("req", req);
-  console.log("body", req.body);
   const { email, line_items } = req.body;
 
   try {
@@ -23,11 +20,11 @@ router.post('/create-payment-intent', async (req, res) => {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      customer: customer.stripe_customer_id, // ex : "cus_QnBExMh9cwI5oM",
+      customer: customer.stripe_customer_id,
       line_items: line_items.map(select_stripe_props),
       mode: 'payment',
-      success_url: `${process.env.VITE_APP_CLIENT_URL}/payment/success`, // URL for payment success
-      cancel_url: `${process.env.VITE_APP_CLIENT_URL}/payment/cancel`, // URL for payment error
+      success_url: `${process.env.VITE_APP_CLIENT_URL}/payment/success`,
+      cancel_url: `${process.env.VITE_APP_CLIENT_URL}/payment/cancel`,
     });
 
     res.json({session_id: session.id});
@@ -55,7 +52,6 @@ router.post('/payment-success/:user_id', async (req, res) => {
           stock[cart_item.size].stock = parseInt(stock[cart_item.size].stock) - parseInt(cart_item.quantity);
         }
         
-        console.log("update stock", stock);
         await db.query("UPDATE sneakers SET stock = ? WHERE name = ?", [JSON.stringify(stock), cart_item.name]);
       }
     }

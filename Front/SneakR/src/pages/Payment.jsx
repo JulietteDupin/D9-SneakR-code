@@ -11,7 +11,6 @@ export default function Payment() {
 
 const handlePayment = async (e) => {
     e.preventDefault();
-    console.log("handlepayment");
 
     try {
 
@@ -26,7 +25,6 @@ const handlePayment = async (e) => {
 
       const data = await response.json();
       
-      console.log("response", data.session_id);
       const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
       const stripe = await stripePromise;
       if (stripe) {

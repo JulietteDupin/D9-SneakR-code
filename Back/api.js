@@ -82,7 +82,6 @@ function getShoeSizes(category) {
 async function updateSneakersStock() {
   try {
     for (let page = 0; page <= 1969; page++) {
-      console.log("page", page);
       const response = await fetch(`http://54.37.12.181:1337/api/sneakers?pagination%5Bpage%5D=${page}`);
       const data = await response.json();
 
@@ -98,7 +97,6 @@ async function updateSneakersStock() {
           const sizes = getShoeSizes(gender);
 
           await db.query("UPDATE sneakers SET stock=? WHERE name = ?", [sizes, name]);
-          console.log("sizes", sizes, name);
         } catch (error) {
           console.log("Error updating sneaker with name ${sneaker.attributes.name}: ${error.message}");
         }

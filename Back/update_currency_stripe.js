@@ -7,7 +7,6 @@ async function updateCurrency() {
   try {
     const [sneakers] = await db.query('SELECT * FROM sneakers;');
 
-    // Check if sneakers is an array
     if (!Array.isArray(sneakers)) {
       throw new Error('Unexpected result format from db.query');
     }
@@ -15,18 +14,15 @@ async function updateCurrency() {
     for (const sneaker of sneakers) {
       try {
         if (sneaker.id % 25 === 0) {
-          await delay(1050); // Delay to avoid hitting rate limits
+          await delay(1050);
         }
 
-        // Update the stripe price with the new currency
-        console.log("stripe price", sneaker.stripe_price_id);
         if(sneaker.stripe_price_id != null) {
             const price = await stripe.payout.update(sneaker.stripe_price_id, { 
                 currency: 'eur'
             });
         }
 
-        console.log(`Updated price for sneaker ID ${sneaker.id}:`, price);
       } catch (error) {
         console.error(`Error updating sneaker ID ${sneaker.id}:`, error.message);
       }

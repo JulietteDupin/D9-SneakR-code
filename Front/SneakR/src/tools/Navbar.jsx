@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import "../../css/navbar.css"
 import { Link } from 'react-router-dom';
-import { Button } from '../components/ui/button';
-import { AiOutlineShoppingCart } from "react-icons/ai";
+
+import "../../css/navbar.css"
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +17,7 @@ const Navbar = () => {
                 <li><Link to="/products">Catalog</Link></li>
                 <li><Link to="/products/category/men">Men</Link></li>
                 <li><Link to="/products/category/women">Women</Link></li>
+                <li><Link to="/products/category/unisex">Unisex</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
                 <li><Link to="/account">My Account</Link></li>
                 <li><Link to="/cart">Cart</Link></li>

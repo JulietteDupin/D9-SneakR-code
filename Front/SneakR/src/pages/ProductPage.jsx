@@ -1,7 +1,7 @@
 'use client';
 import { React, useState } from 'react';
-import { ShoppingCart, Star, Heart } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { ShoppingCart, Star, Heart, CheckCircle2 } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 import Navbar from '../tools/Navbar';
 import NotFound from '../components/NotFound';
 import { useCart } from '../context/CartContext';
@@ -11,19 +11,19 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
-export default function ProductPage({
-  sneaker
-}) {
-  const { addToCart } = useCart()
+export default function ProductPage({ sneaker }) {
+  const { addToCart } = useCart();
+  const [showAlert, setShowAlert] = useState(false); // Alerte pour ajout au panier
 
   if (!sneaker) {
     return <NotFound />;
   }
 
-  const parsedImage = JSON.parse(sneaker.image)
-  const parsedStock = JSON.parse(sneaker.stock)
+  const parsedImage = JSON.parse(sneaker.image);
+  const parsedStock = JSON.parse(sneaker.stock);
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4">
@@ -39,20 +39,34 @@ export default function ProductPage({
                   color={sneaker.colorway}
                   size={sneaker.size}
                   price={sneaker.estimatedMarketValue} />
-                <ProductActions addToCart={addToCart} product={sneaker} stock={parsedStock} />
+                <ProductActions
+                  addToCart={addToCart}
+                  product={sneaker}
+                  stock={parsedStock}
+                  setShowAlert={setShowAlert} // Passer l'état de l'alerte
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {showAlert && (
+        <Alert
+          className="fixed bottom-4 right-4 w-96 bg-white shadow-lg border border-gray-300"
+          variant="success">
+          <CheckCircle2 className="h-6 w-6 text-green-600" />
+          <AlertTitle>Added to Cart</AlertTitle>
+          <AlertDescription>
+            The item has been added to your cart 
+          </AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 }
 
-const ProductImage = ({
-  src,
-  alt
-}) => {
+const ProductImage = ({ src, alt }) => {
   return (
     <div className="lg:w-1/2 flex items-center justify-center overflow-hidden">
       <div className="w-full h-0 pb-[100%] relative">
@@ -66,10 +80,7 @@ const ProductImage = ({
   );
 }
 
-const ProductDetails = ({
-  title,
-  description
-}) => {
+const ProductDetails = ({ title, description }) => {
   return (
     <div className="mb-6">
       <h1 className="text-2xl font-bold mb-2">{title}</h1>
@@ -86,11 +97,7 @@ const ProductDetails = ({
   );
 }
 
-const ProductOptions = ({
-  color,
-  size,
-  price
-}) => {
+const ProductOptions = ({ color, size, price }) => {
   return (
     <div className="mb-6">
       <div className="mb-2">
@@ -106,12 +113,8 @@ const ProductOptions = ({
   );
 }
 
-const ProductActions = ({
-  addToCart,
-  product,
-  stock
-}) => {
-  const [selectedSize, setSelectedSize] = useState('')
+const ProductActions = ({ addToCart, product, stock, setShowAlert }) => {
+  const [selectedSize, setSelectedSize] = useState('');
 
   const item = {
     id: product.id,
@@ -126,8 +129,10 @@ const ProductActions = ({
 
   const handleAddToCart = () => {
     if (selectedSize) {
-      const updatedItem = { ...item, size: selectedSize }
-      addToCart(updatedItem)
+      const updatedItem = { ...item, size: selectedSize };
+      addToCart(updatedItem);
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
     }
   }
 
@@ -135,7 +140,7 @@ const ProductActions = ({
     <div className="space-y-4">
       <Select onValueChange={setSelectedSize}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Choisissez votre taille" />
+          <SelectValue placeholder="Choose your size" />
         </SelectTrigger>
         <SelectContent>
           {Object.entries(stock).map(([size, quantity]) => (

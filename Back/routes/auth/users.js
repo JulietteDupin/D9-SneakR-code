@@ -148,7 +148,6 @@ router.put('/cart/:id', async (req, res) => {
   const { id } = req.params;
   const { cart } = req.body;
 
-  console.log("update cart", cart);
   try {
     const [result] = await db.query(
       'UPDATE users SET cart = ? WHERE id = ?',
