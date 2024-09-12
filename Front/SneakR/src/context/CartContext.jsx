@@ -1,22 +1,46 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { jwtDecode } from "jwt-decode";
 
 const initialState = {
   cartItems: [],
   totalAmount: 0,
 };
 
+
+async function updateCart(cartItems) {
+  if (localStorage.getItem("token")) {
+    const user_datas = jwtDecode(localStorage.getItem("token"));
+    try {
+      let response = await fetch(import.meta.env.VITE_APP_USERS_ROUTE + "/cart/" + user_datas.id , {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': "*",
+        },
+        body: JSON.stringify({ "cart": cartItems })
+      })
+      if (response.ok) {
+        console.log('Cart updated')
+      } else {
+        console.error(response)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
+}
+
 function cartReducer(state, action) {
+
   switch (action.type) {
     case 'ADD_TO_CART': {
       const itemToAdd = action.payload;
 
-      console.log("itemToAdd", itemToAdd);
-
-      const existingItem = state.cartItems.find((item) => item.id === itemToAdd.id);
+      const existingItem = state.cartItems.find((item) => item.id === itemToAdd.id && item.size === itemToAdd.size);
 
       if (existingItem) {
         const updatedCartItems = state.cartItems.map((item) =>
-          item.id === itemToAdd.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === itemToAdd.id && item.size === itemToAdd.size ? { ...item, quantity: item.quantity + 1 } : item
         );
 
         return {
@@ -60,9 +84,11 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
-  const addToCart = (item) => {
-    console.log("addToCart", item);
+  useEffect(() => {
+    updateCart(state.cartItems);
+  }, [state])
 
+  const addToCart = (item) => {
     dispatch({ type: 'ADD_TO_CART', payload: item });
   };
 

@@ -3,7 +3,6 @@ const db = require('./config/db');
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 function convertISOToMySQLDateTime(isoDateString) {
-  // Parse the ISO date string
   if (isoDateString == '') {
     return null;
   }

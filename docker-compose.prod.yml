@@ -1,5 +1,5 @@
 services:
-  mysql:
+  db:
     build:
       context: .
     container_name: mysql_prod_container
@@ -12,7 +12,8 @@ services:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./app:/docker-entrypoint-initdb.d/
+      - ./Back/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./Back/reset.sql:/docker-entrypoint-initdb.d/reset.sql
     networks:
       - my_network
 
@@ -25,7 +26,7 @@ services:
     ports:
       - "5000:5000" 
     depends_on:
-      - mysql
+      - db
     networks:
       - my_network
 

@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaLock } from 'react-icons/fa'
+import { FaUser, FaLock } from 'react-icons/fa';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import logo from '../assets/logo_brand.png'
+import logo from '../assets/logo_brand.png';
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle, CheckCircle } from "lucide-react";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -13,17 +15,30 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [alertType, setAlertType] = useState(''); // 'success' ou 'error'
+  const [shouldNavigate, setShouldNavigate] = useState(false);
+
+  useEffect(() => {
+    if (shouldNavigate) {
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000); // 2 secondes de délai avant redirection
+    }
+  }, [shouldNavigate, navigate]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
+      setAlertType('error');
       return;
     }
 
     if (!firstName || !lastName || !password || !email) {
       setError('Please fill in all fields');
+      setAlertType('error');
       return;
     }
 
@@ -34,20 +49,22 @@ export default function Register() {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': "*",
         },
-        body: JSON.stringify({ "firstName": firstName, "lastName": lastName, "email": email, "password": password })
-      })
+        body: JSON.stringify({ firstName, lastName, email, password })
+      });
 
       const data = await response.json();
 
       if (response.ok) {
-        navigate('/login');
+        setMessage('Registration successful');
+        setAlertType('success');
+        setShouldNavigate(true); // Lancer la redirection après un délai
       } else {
-        console.error(response)
-        setError("User not created")
+        setError("User not created");
+        setAlertType('error');
       }
     } catch (error) {
-      console.error('Error:', error)
-      setError(error.message)
+      setError('Error during registration');
+      setAlertType('error');
     }
   };
 
@@ -55,7 +72,7 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#c33035' }}>
       <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
         <div className="flex mb-10 justify-center">
-          <img className="h-20 w-30 mt-5" src={logo}></img>
+          <img className="h-20 w-30 mt-5" src={logo} alt="Logo" />
         </div>
         <form onSubmit={handleRegister} className="space-y-4">
           {error && <p className="text-red-500 text-center">{error}</p>}
@@ -130,6 +147,31 @@ export default function Register() {
           </p>
         </div>
       </div>
+
+      {/* Alerte en bas à droite */}
+      {message && (
+        <Alert
+          variant={alertType === 'success' ? 'success' : 'destructive'}
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            zIndex: 1000,
+            width: '300px',
+            backgroundColor: '#fff',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            borderRadius: '8px',
+          }}
+        >
+          {alertType === 'success' ? (
+            <CheckCircle className="h-4 w-4" />
+          ) : (
+            <AlertCircle className="h-4 w-4" />
+          )}
+          <AlertTitle>{alertType === 'success' ? 'Success' : 'Error'}</AlertTitle>
+          <AlertDescription>{message}</AlertDescription>
+        </Alert>
+      )}
     </div>
-  )
+  );
 }

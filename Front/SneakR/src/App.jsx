@@ -1,16 +1,22 @@
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+
 import Catalog from './pages/Catalog';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductPage from './pages/ProductPage';
+import ForgotPassword from './components/ForgotPassword';
+import { ResetPassword } from './components/reset-password';
 import Payment from './pages/Payment';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentCancel from './pages/PaymentCancel';
 import CategoryPage from './pages/CategoryPage';
 import PrivateRoute from './tools/PrivateRoute';
 import PublicRoute from './tools/PublicRoute';
 import ProfileSettings from './pages/Account';
-import { CartProvider } from './context/CartContext';
 import Cart from './pages/Cart';
+import CGU from './pages/CGU';
 
 export default function App() {
   const [selectedSneaker, setSelectedSneaker] = useState(null);
@@ -53,15 +59,38 @@ export default function App() {
             </PrivateRoute >
           } />
 
+          {/* payment routes */}
           <Route path="/payment" element={<PrivateRoute>
             <Payment />
           </PrivateRoute>
           } />
 
+          <Route path="/cgu" element={
+            <PrivateRoute>
+              <CGU />
+            </PrivateRoute >
+          } />
+
+          <Route path="/payment/success" element={<PrivateRoute>
+            <PaymentSuccess />
+          </PrivateRoute>
+          } />
+
+          <Route path="/payment/cancel" element={<PrivateRoute>
+            <PaymentCancel />
+          </PrivateRoute>
+          } />
+
+
           {/* public routes */}
           <Route path="/login" element={
             <PublicRoute>
               <Login />
+            </PublicRoute >
+          } />
+          <Route path="/reset-password" element={
+            <PublicRoute>
+              <ForgotPassword />
             </PublicRoute >
           } />
 
@@ -70,7 +99,11 @@ export default function App() {
               <Register />
             </PublicRoute >
           } />
-
+          <Route path="/reset-password/:token" element={
+            <PublicRoute>
+              <ResetPassword />
+            </PublicRoute >
+          } />
         </Routes>
       </div >
     </CartProvider>

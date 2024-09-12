@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS SneakR;
+USE SneakR;
+
+DROP TABLE IF EXISTS user_reset;
+CREATE TABLE IF NOT EXISTS user_reset (
+  user_id INT NOT NULL PRIMARY KEY,
+  reset_password_token VARCHAR(255) DEFAULT NULL,
+  reset_token_expires BIGINT DEFAULT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

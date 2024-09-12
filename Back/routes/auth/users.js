@@ -14,14 +14,28 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get a user by ID
+// Get a user by ID, including preferences
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [id]);
+    const [rows] = await db.query(`
+      SELECT 
+        u.id, 
+        u.firstname, 
+        u.lastname, 
+        u.email, 
+        u.birthdate, 
+        up.shoe_size AS size, 
+        up.favorite_brand AS favoriteCategory
+      FROM users u
+      LEFT JOIN user_preferences up ON u.id = up.user_id
+      WHERE u.id = ?
+    `, [id]);
+
     if (rows.length === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
+
     res.json(rows[0]);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -57,12 +71,12 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
-// Update a user by ID
+
+// Update user infos or preferences by user ID
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, birthdate, email, password, size, favorite_category } = req.body;
+  const { firstName, lastName, birthdate, email, password, size, favoriteCategory } = req.body;
 
-  // Check if password is provided
   let hashedPassword;
   if (password) {
     const saltRounds = 10;
@@ -70,20 +84,50 @@ router.put('/:id', async (req, res) => {
   }
 
   try {
-    const [result] = await db.query(
-      `UPDATE users SET firstname = ?, lastname = ?, birthdate = ?, email = ?${
-        hashedPassword ? ', password = ?' : ''
-      }, size = ?, favorite_category = ? WHERE id = ?`,
-      [firstName, lastName, birthdate, email, hashedPassword || '', size, favorite_category, id]
-    ); 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'No rows were updated' });
+    if (firstName || lastName || birthdate || email || password) {
+
+      let sql = `UPDATE users SET firstname = ?, lastname = ?, birthdate = ?, email = ?`;
+      let params = [firstName, lastName, birthdate, email];
+
+      if (hashedPassword) {
+        sql += `, password = ?`;
+        params.push(hashedPassword);
+      }
+
+      sql += ` WHERE id = ?`;
+      params.push(id);
+
+      await db.query(sql, params);
+      console.log('Mise à jour de la table users effectuée');
     }
-    res.json({ message: 'User updated' });
+
+    if (size || favoriteCategory) {
+
+      const [rows] = await db.query(`SELECT * FROM user_preferences WHERE user_id = ?`, [id]);
+
+      if (rows.length > 0) {
+
+        await db.query(
+          `UPDATE user_preferences SET shoe_size = ?, favorite_brand = ? WHERE user_id = ?`,
+          [size, favoriteCategory, id]
+        );
+      } else {
+        await db.query(
+          `INSERT INTO user_preferences (user_id, shoe_size, favorite_brand) VALUES (?, ?, ?)`,
+          [id, size, favoriteCategory]
+        );
+      }
+
+      console.log('Mise à jour de la table user_preferences effectuée');
+    }
+
+    res.json({ message: 'User and/or preferences updated' });
   } catch (err) {
+    console.error('Erreur lors de la mise à jour de l\'utilisateur ou des préférences:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
 
 // Delete a user by ID
 router.delete('/:id', async (req, res) => {
@@ -98,5 +142,26 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
+// Cart management
+router.put('/cart/:id', async (req, res) => {
+  const { id } = req.params;
+  const { cart } = req.body;
+
+  console.log("update cart", cart);
+  try {
+    const [result] = await db.query(
+      'UPDATE users SET cart = ? WHERE id = ?',
+      [JSON.stringify(cart), id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ message: 'User updated' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
 
 module.exports = router;
