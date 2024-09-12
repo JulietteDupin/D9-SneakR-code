@@ -69,7 +69,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#c33035' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'white' }}>
       <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
         <div className="flex mb-10 justify-center">
           <img className="h-20 w-30 mt-5" src={logo} alt="Logo" />
