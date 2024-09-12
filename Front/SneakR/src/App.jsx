@@ -16,6 +16,7 @@ import PrivateRoute from './tools/PrivateRoute';
 import PublicRoute from './tools/PublicRoute';
 import ProfileSettings from './pages/Account';
 import Cart from './pages/Cart';
+import CGU from './pages/CGU';
 
 export default function App() {
   const [selectedSneaker, setSelectedSneaker] = useState(null);
@@ -62,6 +63,12 @@ export default function App() {
           <Route path="/payment" element={<PrivateRoute>
             <Payment />
           </PrivateRoute>
+          } />
+
+          <Route path="/cgu" element={
+            <PrivateRoute>
+              <CGU />
+            </PrivateRoute >
           } />
 
           <Route path="/payment/success" element={<PrivateRoute>
