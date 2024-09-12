@@ -11,6 +11,10 @@ import PublicRoute from './tools/PublicRoute';
 import ProfileSettings from './pages/Account';
 import { CartProvider } from './context/CartContext';
 import Cart from './pages/Cart';
+import AdminRoute from './tools/AdminRoute';
+import Home from './pages/admin/Home';
+import Users from './pages/admin/Users';
+import Stock from './pages/admin/Stock';
 
 export default function App() {
   const [selectedSneaker, setSelectedSneaker] = useState(null);
@@ -57,6 +61,17 @@ export default function App() {
             <Payment />
           </PrivateRoute>
           } />
+          
+          {/* admin routes */}
+            <Route path="/admin/home" element={<AdminRoute>
+              <Home />
+            </AdminRoute>} /> 
+            <Route path="/admin/users" element={<AdminRoute>
+              <Users />
+            </AdminRoute>} /> 
+            <Route path="/admin/inventory" element={<AdminRoute>
+              <Stock />
+            </AdminRoute>} /> 
 
           {/* public routes */}
           <Route path="/login" element={

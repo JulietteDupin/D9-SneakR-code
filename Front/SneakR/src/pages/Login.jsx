@@ -30,7 +30,13 @@ export default function Login() {
         localStorage.setItem('token', data.token);
 
         alert('Login successful');
-        navigate('/products');
+
+        if (data.isAdmin == 0) {
+          navigate('/products');
+        } else {
+          localStorage.setItem('admin', true);
+          navigate('/admin/home');
+        }
       } else {
         alert('Credentials are invalid');
       }

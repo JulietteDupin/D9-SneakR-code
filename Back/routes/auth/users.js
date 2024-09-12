@@ -48,8 +48,8 @@ router.post('/', async (req, res) => {
     });
 
     const [result] = await db.query(
-      'INSERT INTO users (firstName, lastName, email, password, stripe_customer_id) VALUES (?, ?, ?, ?, ?)',
-      [firstName, lastName, email, hashedPassword, customer.id]
+      'INSERT INTO users (firstName, lastName, email, password, stripe_customer_id, isAdmin) VALUES (?, ?, ?, ?, ?, ?)',
+      [firstName, lastName, email, hashedPassword, customer.id, 1]
     );
 
     res.status(201).json({ id: result.insertId, firstName, lastName, email });
@@ -57,6 +57,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
 // Update a user by ID
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
